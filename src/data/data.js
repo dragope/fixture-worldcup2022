@@ -547,128 +547,142 @@ const data = {
             positions: []
         }
     ],
-    round16: [
+    finalstages: [
         {
-            matchid: 49, 
-            local: "A1", 
-            visitor: "B2",
-            stadium: "Doha",
-            date: "2022-12-03T12:00:00Z"
+            name: "Round of 16",
+            matches: [
+                {
+                    matchid: 49, 
+                    local: "A1", 
+                    visitor: "B2",
+                    stadium: "Doha",
+                    date: "2022-12-03T12:00:00Z"
+                },
+                {
+                    matchid: 50, 
+                    local: "C1", 
+                    visitor: "D2",
+                    stadium: "Al Rayyan",
+                    date: "2022-12-03T16:00:00Z"
+                },
+                {
+                    matchid: 51, 
+                    local: "B1", 
+                    visitor: "A2",
+                    stadium: "Jor",
+                    date: "2022-12-04T16:00:00Z"
+                },
+                {
+                    matchid: 53, 
+                    local: "D1", 
+                    visitor: "C2",
+                    stadium: "Doha",
+                    date: "2022-12-04T12:00:00Z"
+                },
+                {
+                    matchid: 54, 
+                    local: "E1", 
+                    visitor: "F2",
+                    stadium: "Al Wakrah",
+                    date: "2022-12-05T12:00:00Z"
+                },
+                {
+                    matchid: 55, 
+                    local: "G1", 
+                    visitor: "H2",
+                    stadium: "Doha",
+                    date: "2022-12-05T16:00:00Z"
+                },
+                {
+                    matchid: 56, 
+                    local: "F1", 
+                    visitor: "E2",
+                    stadium: "Doha",
+                    date: "2022-12-06T12:00:00Z"
+                },
+                {
+                    matchid: 57, 
+                    local: "H1", 
+                    visitor: "G2",
+                    stadium: "Lusail",
+                    date: "2022-12-06T16:00:00Z"
+                }
+            ]
         },
         {
-            matchid: 50, 
-            local: "C1", 
-            visitor: "D2",
-            stadium: "Al Rayyan",
-            date: "2022-12-03T16:00:00Z"
+            name: "Quarterfinals",
+            matches: [
+                {
+                    matchid: 58, 
+                    local: 54, 
+                    visitor: 55,
+                    stadium: "Doha",
+                    date: "2022-12-09T12:00:00Z"
+                },
+                {
+                    matchid: 59, 
+                    local: 49, 
+                    visitor: 50,
+                    stadium: "Lusail",
+                    date: "2022-12-09T16:00:00Z"
+                },
+                {
+                    matchid: 60, 
+                    local: 56, 
+                    visitor: 57,
+                    stadium: "Doha",
+                    date: "2022-12-10T12:00:00Z"
+                },
+                {
+                    matchid: 61, 
+                    local: 51, 
+                    visitor: 52,
+                    stadium: "Jor",
+                    date: "2022-12-10T16:00:00Z"
+                }
+            ],
+            semifinals: [
+                {
+                    matchid: 62, 
+                    local: 59, 
+                    visitor: 58,
+                    stadium: "Lusail",
+                    date: "2022-12-13T16:00:00Z"
+                },
+                {
+                    matchid: 63, 
+                    local: 61, 
+                    visitor: 62,
+                    stadium: "Jor",
+                    date: "2022-12-14T16:00:00Z"
+                }
+            ]
         },
         {
-            matchid: 51, 
-            local: "B1", 
-            visitor: "A2",
-            stadium: "Jor",
-            date: "2022-12-04T16:00:00Z"
+            name: "Third Place",
+            matches: [
+                {
+                    matchid: 64, 
+                    local: "loser 62", 
+                    visitor: "loser 63",
+                    stadium: "Doha",
+                    date: "2022-12-17T12:00:00Z"
+                }
+            ]
         },
         {
-            matchid: 53, 
-            local: "D1", 
-            visitor: "C2",
-            stadium: "Doha",
-            date: "2022-12-04T12:00:00Z"
-        },
-        {
-            matchid: 54, 
-            local: "E1", 
-            visitor: "F2",
-            stadium: "Al Wakrah",
-            date: "2022-12-05T12:00:00Z"
-        },
-        {
-            matchid: 55, 
-            local: "G1", 
-            visitor: "H2",
-            stadium: "Doha",
-            date: "2022-12-05T16:00:00Z"
-        },
-        {
-            matchid: 56, 
-            local: "F1", 
-            visitor: "E2",
-            stadium: "Doha",
-            date: "2022-12-06T12:00:00Z"
-        },
-        {
-            matchid: 57, 
-            local: "H1", 
-            visitor: "G2",
-            stadium: "Lusail",
-            date: "2022-12-06T16:00:00Z"
+            name: "Final",
+            matches: [
+                {
+                    matchid: 65, 
+                    local: 62, 
+                    visitor: 63,
+                    stadium: "Doha",
+                    date: "2022-12-17T12:00:00Z"
+                }
+            ]
         }
     ],
-    quarterfinals: [
-        {
-            matchid: 58, 
-            local: 54, 
-            visitor: 55,
-            stadium: "Doha",
-            date: "2022-12-09T12:00:00Z"
-        },
-        {
-            matchid: 59, 
-            local: 49, 
-            visitor: 50,
-            stadium: "Lusail",
-            date: "2022-12-09T16:00:00Z"
-        },
-        {
-            matchid: 60, 
-            local: 56, 
-            visitor: 57,
-            stadium: "Doha",
-            date: "2022-12-10T12:00:00Z"
-        },
-        {
-            matchid: 61, 
-            local: 51, 
-            visitor: 52,
-            stadium: "Jor",
-            date: "2022-12-10T16:00:00Z"
-        }
-    ],
-    semifinals: [
-        {
-            matchid: 62, 
-            local: 59, 
-            visitor: 58,
-            stadium: "Lusail",
-            date: "2022-12-13T16:00:00Z"
-        },
-        {
-            matchid: 63, 
-            local: 61, 
-            visitor: 62,
-            stadium: "Jor",
-            date: "2022-12-14T16:00:00Z"
-        }
-    ],
-    thirdplace: [
-        {
-            matchid: 64, 
-            local: "loser 62", 
-            visitor: "loser 63",
-            stadium: "Doha",
-            date: "2022-12-17T12:00:00Z"
-        }
-    ],
-    final: [
-        {
-            matchid: 65, 
-            local: 62, 
-            visitor: 63,
-            stadium: "Doha",
-            date: "2022-12-17T12:00:00Z"
-        }
-    ]
 }
 
 export default data
