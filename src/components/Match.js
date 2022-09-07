@@ -19,10 +19,12 @@ function Match({ data, match }) {
                         <label htmlFor="local">Local</label>
                         <input type="checkbox" className='group-stage-group-match-result' />
                     </div>
-                    <div className='group-stage-group-match-result-container'>
-                        <label htmlFor="local">Tie</label>
-                        <input type="checkbox" className='group-stage-group-match-result' />
-                    </div>
+                    { match.matchid < 49 && 
+                        <div className='group-stage-group-match-result-container'>
+                            <label htmlFor="local">Tie</label>
+                            <input type="checkbox" className='group-stage-group-match-result' />
+                        </div>
+                    }
                     <div className='group-stage-group-match-result-container'>
                         <label htmlFor="local">Visitor</label>
                         <input type="checkbox" className='group-stage-group-match-result' />
