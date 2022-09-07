@@ -170,42 +170,48 @@ const data = {
                     local: 1, 
                     visitor: 2,
                     stadium: "Lusail",
-                    date: "2022-11-21T13:00:00Z"
+                    date: "2022-11-21T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 2,
                     local: 3, 
                     visitor: 4,
                     stadium: "Doha",
-                    date: "2022-11-21T07:00:00Z"
+                    date: "2022-11-21T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 3, 
                     local: 1, 
                     visitor: 3,
                     stadium: "Doha",
-                    date: "2022-11-25T10:00:00Z"
+                    date: "2022-11-25T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 4, 
                     local: 4, 
                     visitor: 2,
                     stadium: "AlRayyan",
-                    date: "2022-11-25T13:00:00Z"
+                    date: "2022-11-25T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 5, 
                     local: 4,
                     visitor: 1,
                     stadium: "Jor",
-                    date: "2022-11-29T12:00:00Z"
+                    date: "2022-11-29T12:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 6, 
                     local: 2, 
                     visitor: 3,
                     stadium: "Doha",
-                    date: "2022-11-29T12:00:00Z"
+                    date: "2022-11-29T12:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -218,42 +224,48 @@ const data = {
                     local: 5, 
                     visitor: 6,
                     stadium: "Doha",
-                    date: "2022-11-21T10:00:00Z"
+                    date: "2022-11-21T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 8,
                     local: 7, 
                     visitor: 8,
                     stadium: "AlRayyan",
-                    date: "2022-11-21T16:00:00Z"
+                    date: "2022-11-21T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 9, 
                     local: 5, 
                     visitor: 7,
                     stadium: "Jor",
-                    date: "2022-11-25T16:00:00Z"
+                    date: "2022-11-25T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 10, 
                     local: 8, 
                     visitor: 6,
                     stadium: "Doha",
-                    date: "2022-11-25T07:00:00Z"
+                    date: "2022-11-25T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 11, 
                     local: 8,
                     visitor: 5,
                     stadium: "AlRayyan",
-                    date: "2022-11-29T16:00:00Z"
+                    date: "2022-11-29T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 12, 
                     local: 2, 
                     visitor: 3,
                     stadium: "Doha",
-                    date: "2022-11-29T16:00:00Z"
+                    date: "2022-11-29T16:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -266,42 +278,48 @@ const data = {
                     local: 9, 
                     visitor: 10,
                     stadium: "Lusail",
-                    date: "2022-11-22T07:00:00Z"
+                    date: "2022-11-22T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 14,
                     local: 11, 
                     visitor: 12,
                     stadium: "Doha",
-                    date: "2022-11-21T13:00:00Z"
+                    date: "2022-11-21T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 15, 
                     local: 9, 
                     visitor: 11,
                     stadium: "Lusail",
-                    date: "2022-11-26T16:00:00Z"
+                    date: "2022-11-26T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 16, 
                     local: 12, 
                     visitor: 10,
                     stadium: "Doha",
-                    date: "2022-11-26T10:00:00Z"
+                    date: "2022-11-26T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 17, 
                     local: 12,
                     visitor: 9,
                     stadium: "Doha",
-                    date: "2022-11-30T16:00:00Z"
+                    date: "2022-11-30T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 18, 
                     local: 10, 
                     visitor: 11,
                     stadium: "Lusail",
-                    date: "2022-11-30T16:00:00Z"
+                    date: "2022-11-30T16:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -314,42 +332,48 @@ const data = {
                     local: 13, 
                     visitor: 14,
                     stadium: "Al Wakrah",
-                    date: "2022-11-22T16:00:00Z"
+                    date: "2022-11-22T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 20,
                     local: 15, 
                     visitor: 16,
                     stadium: "Doha",
-                    date: "2022-11-22T10:00:00Z"
+                    date: "2022-11-22T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 21, 
                     local: 13, 
                     visitor: 15,
                     stadium: "Doha",
-                    date: "2022-11-26T13:00:00Z"
+                    date: "2022-11-26T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 22, 
                     local: 16, 
                     visitor: 14,
                     stadium: "Al Wakrah",
-                    date: "2022-11-26T07:00:00Z"
+                    date: "2022-11-26T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 23, 
                     local: 16,
                     visitor: 13,
                     stadium: "Doha",
-                    date: "2022-11-30T12:00:00Z"
+                    date: "2022-11-30T12:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 24, 
                     local: 14, 
                     visitor: 15,
                     stadium: "Al Wakrah",
-                    date: "2022-11-30T12:00:00Z"
+                    date: "2022-11-30T12:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -362,42 +386,48 @@ const data = {
                     local: 17, 
                     visitor: 18,
                     stadium: "Doha",
-                    date: "2022-11-23T13:00:00Z"
+                    date: "2022-11-23T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 26,
                     local: 19, 
                     visitor: 20,
                     stadium: "Doha",
-                    date: "2022-11-23T10:00:00Z"
+                    date: "2022-11-23T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 27, 
                     local: 17, 
                     visitor: 19,
                     stadium: "Jor",
-                    date: "2022-11-27T16:00:00Z"
+                    date: "2022-11-27T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 28, 
                     local: 20, 
                     visitor: 18,
                     stadium: "Al Rayyan",
-                    date: "2022-11-27T07:00:00Z"
+                    date: "2022-11-27T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 29, 
                     local: 20,
                     visitor: 17,
                     stadium: "Doha",
-                    date: "2022-12-01T16:00:00Z"
+                    date: "2022-12-01T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 30, 
                     local: 18, 
                     visitor: 19,
                     stadium: "Jor",
-                    date: "2022-12-01T16:00:00Z"
+                    date: "2022-12-01T16:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -410,42 +440,48 @@ const data = {
                     local: 21, 
                     visitor: 22,
                     stadium: "Al Rayyan",
-                    date: "2022-11-23T16:00:00Z"
+                    date: "2022-11-23T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 32,
                     local: 23, 
                     visitor: 24,
                     stadium: "Jor",
-                    date: "2022-11-23T07:00:00Z"
+                    date: "2022-11-23T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 33, 
                     local: 21, 
                     visitor: 23,
                     stadium: "Doha",
-                    date: "2022-11-27T10:00:00Z"
+                    date: "2022-11-27T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 34, 
                     local: 24, 
                     visitor: 22,
                     stadium: "Doha",
-                    date: "2022-11-27T13:00:00Z"
+                    date: "2022-11-27T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 35, 
                     local: 24,
                     visitor: 21,
                     stadium: "Al Rayyan",
-                    date: "2022-12-01T12:00:00Z"
+                    date: "2022-12-01T12:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 36, 
                     local: 22, 
                     visitor: 23,
                     stadium: "Doha",
-                    date: "2022-12-01T12:00:00Z"
+                    date: "2022-12-01T12:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -458,42 +494,48 @@ const data = {
                     local: 25, 
                     visitor: 26,
                     stadium: "Lusail",
-                    date: "2022-11-24T16:00:00Z"
+                    date: "2022-11-24T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 38,
                     local: 27, 
                     visitor: 28,
                     stadium: "Al Wakrah",
-                    date: "2022-11-24T07:00:00Z"
+                    date: "2022-11-24T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 39, 
                     local: 25, 
                     visitor: 27,
                     stadium: "Doha",
-                    date: "2022-11-28T13:00:00Z"
+                    date: "2022-11-28T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 40, 
                     local: 28, 
                     visitor: 26,
                     stadium: "Al Wakrah",
-                    date: "2022-11-28T07:00:00Z"
+                    date: "2022-11-28T07:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 41, 
                     local: 28,
                     visitor: 25,
                     stadium: "Lusail",
-                    date: "2022-12-02T16:00:00Z"
+                    date: "2022-12-02T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 42, 
                     local: 26, 
                     visitor: 27,
                     stadium: "Doha",
-                    date: "2022-12-02T16:00:00Z"
+                    date: "2022-12-02T16:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -506,42 +548,48 @@ const data = {
                     local: 29, 
                     visitor: 30,
                     stadium: "Doha",
-                    date: "2022-11-24T13:00:00Z"
+                    date: "2022-11-24T13:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 44,
                     local: 31, 
                     visitor: 32,
                     stadium: "Doha",
-                    date: "2022-11-24T10:00:00Z"
+                    date: "2022-11-24T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 45, 
                     local: 29, 
                     visitor: 31,
                     stadium: "Lusail",
-                    date: "2022-11-28T16:00:00Z"
+                    date: "2022-11-28T16:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 46, 
                     local: 32, 
                     visitor: 30,
                     stadium: "Doha",
-                    date: "2022-11-28T10:00:00Z"
+                    date: "2022-11-28T10:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 47, 
                     local: 32,
                     visitor: 29,
                     stadium: "Doha",
-                    date: "2022-12-02T12:00:00Z"
+                    date: "2022-12-02T12:00:00Z",
+                    stage: "group"
                 },
                 {
                     matchid: 48, 
                     local: 30, 
                     visitor: 31,
                     stadium: "Al Wakrah",
-                    date: "2022-12-02T12:00:00Z"
+                    date: "2022-12-02T12:00:00Z",
+                    stage: "group"
                 }
             ],
             positions: []
@@ -553,59 +601,67 @@ const data = {
             matches: [
                 {
                     matchid: 49, 
-                    local: "A1", 
+                    local: "A1",
                     visitor: "B2",
                     stadium: "Doha",
-                    date: "2022-12-03T12:00:00Z"
+                    date: "2022-12-03T12:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 50, 
                     local: "C1", 
                     visitor: "D2",
                     stadium: "Al Rayyan",
-                    date: "2022-12-03T16:00:00Z"
+                    date: "2022-12-03T16:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 51, 
                     local: "B1", 
                     visitor: "A2",
                     stadium: "Jor",
-                    date: "2022-12-04T16:00:00Z"
+                    date: "2022-12-04T16:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 53, 
                     local: "D1", 
                     visitor: "C2",
                     stadium: "Doha",
-                    date: "2022-12-04T12:00:00Z"
+                    date: "2022-12-04T12:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 54, 
                     local: "E1", 
                     visitor: "F2",
                     stadium: "Al Wakrah",
-                    date: "2022-12-05T12:00:00Z"
+                    date: "2022-12-05T12:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 55, 
                     local: "G1", 
                     visitor: "H2",
                     stadium: "Doha",
-                    date: "2022-12-05T16:00:00Z"
+                    date: "2022-12-05T16:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 56, 
                     local: "F1", 
                     visitor: "E2",
                     stadium: "Doha",
-                    date: "2022-12-06T12:00:00Z"
+                    date: "2022-12-06T12:00:00Z",
+                    stage: "round16"
                 },
                 {
                     matchid: 57, 
                     local: "H1", 
                     visitor: "G2",
                     stadium: "Lusail",
-                    date: "2022-12-06T16:00:00Z"
+                    date: "2022-12-06T16:00:00Z",
+                    stage: "round16"
                 }
             ]
         },
@@ -617,44 +673,53 @@ const data = {
                     local: 54, 
                     visitor: 55,
                     stadium: "Doha",
-                    date: "2022-12-09T12:00:00Z"
+                    date: "2022-12-09T12:00:00Z",
+                    stage: "quarterfinals"
                 },
                 {
                     matchid: 59, 
                     local: 49, 
                     visitor: 50,
                     stadium: "Lusail",
-                    date: "2022-12-09T16:00:00Z"
+                    date: "2022-12-09T16:00:00Z",
+                    stage: "quarterfinals"
                 },
                 {
                     matchid: 60, 
                     local: 56, 
                     visitor: 57,
                     stadium: "Doha",
-                    date: "2022-12-10T12:00:00Z"
+                    date: "2022-12-10T12:00:00Z",
+                    stage: "quarterfinals"
                 },
                 {
                     matchid: 61, 
                     local: 51, 
                     visitor: 52,
                     stadium: "Jor",
-                    date: "2022-12-10T16:00:00Z"
+                    date: "2022-12-10T16:00:00Z",
+                    stage: "quarterfinals"
                 }
             ],
-            semifinals: [
+        },
+        {
+            name: "Semifinals",
+            matches: [
                 {
                     matchid: 62, 
                     local: 59, 
                     visitor: 58,
                     stadium: "Lusail",
-                    date: "2022-12-13T16:00:00Z"
+                    date: "2022-12-13T16:00:00Z",
+                    stage: "semifinals"
                 },
                 {
                     matchid: 63, 
                     local: 61, 
                     visitor: 62,
                     stadium: "Jor",
-                    date: "2022-12-14T16:00:00Z"
+                    date: "2022-12-14T16:00:00Z",
+                    stage: "semifinals"
                 }
             ]
         },
@@ -666,7 +731,8 @@ const data = {
                     local: "loser 62", 
                     visitor: "loser 63",
                     stadium: "Doha",
-                    date: "2022-12-17T12:00:00Z"
+                    date: "2022-12-17T12:00:00Z",
+                    stage: "third place"
                 }
             ]
         },
@@ -678,7 +744,8 @@ const data = {
                     local: 62, 
                     visitor: 63,
                     stadium: "Doha",
-                    date: "2022-12-17T12:00:00Z"
+                    date: "2022-12-17T12:00:00Z",
+                    stage: "final"
                 }
             ]
         }

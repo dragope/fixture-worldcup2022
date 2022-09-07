@@ -1,6 +1,6 @@
 import './App.css';
 import GroupStage from './components/GroupStage';
-import FinalStages from './FinalStages';
+import FinalStages from './components/FinalStages';
 
 function App() {
   return (

@@ -1,23 +1,29 @@
 import React from 'react'
 import './Match.css'
 import GenericFlag from '../images/icons8-flag-96.png'
+import data from '../data/data'
 
-function Match({ data, match }) {
+function Match({ countries, match, id }) {
+
+    const handleClick = () => {
+        console.log(match.stage)
+    }
+
   return (
-        <div id={match.id} className="group-stage-group-match">
+        <div id={id} className="group-stage-group-match">
             <div className='group-stage-group-match-countries'>
                 <div className='group-stage-group-match-team'>
-                    {data[match.local-1] ? 
-                        <img className="group-stage-group-match-countries-flag" src={data[match.local-1].flag} alt="Local Flag" /> 
+                    {countries[match.local-1] ? 
+                        <img className="group-stage-group-match-countries-flag" src={countries[match.local-1].flag} alt="Local Flag" /> 
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Local Flag" /> 
                     }
-                    <p><b>{data[match.local-1] ? data[match.local-1].name : "Qualified " + match.local}</b></p>
+                    <p><b>{countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
                 </div>
                 <div className='group-stage-group-match-results'>
                     <div className='group-stage-group-match-result-container'>
                         <label htmlFor="local">Local</label>
-                        <input type="checkbox" className='group-stage-group-match-result' />
+                        <input type="checkbox" onClick={handleClick} className='group-stage-group-match-result' />
                     </div>
                     { match.matchid < 49 && 
                         <div className='group-stage-group-match-result-container'>
@@ -31,9 +37,9 @@ function Match({ data, match }) {
                     </div>
                 </div>
                 <div className='group-stage-group-match-team'>
-                    <p><b>{data[match.visitor-1] ? data[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
-                    {data[match.visitor-1] ? 
-                        <img className="group-stage-group-match-countries-flag" src={data[match.visitor-1].flag} alt="Visitor Flag" /> 
+                    <p><b>{countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
+                    {countries[match.visitor-1] ? 
+                        <img className="group-stage-group-match-countries-flag" src={countries[match.visitor-1].flag} alt="Visitor Flag" /> 
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Visitor Flag" />
                     }

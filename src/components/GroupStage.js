@@ -8,7 +8,7 @@ function GroupStage() {
     <div className='group-stage'>
       <h1 className='group-stage-title'>Group Stage</h1>
         {
-            data.groups.map( group => <Group group={group} data={data.countries}/>)
+            data.groups.map( group => <Group id={group.group} group={group} countries={data.countries}/>)
         }
     </div>
   )
