@@ -1,0 +1,28 @@
+.fixture{
+    background-color: rgb(175, 175, 175);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    flex-wrap:wrap;
+    padding: 10px;
+}
+.fixture-group-container{
+    margin: 0.25%;
+    border: 1.5px solid black;
+    background-color: white;
+    padding: 1.5px;
+    border-radius: 5px;
+}
+.fixture-group{
+    font-size: 25px;
+    margin-bottom: 2.5%;
+    width: 100%;
+    background-color: rgb(186, 82, 82);
+    border-radius: 5px;
+    font-size: 18px;
+    color: white;
+    border: 1px solid black;
+}

@@ -1,0 +1,71 @@
+.fixture-match {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    margin-top: 5px;
+    width: 400px;
+    background-color: rgb(211, 211, 211);
+    padding: 2px;
+    border-radius: 5px;
+}
+.fixture-match-countries {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    width: 100%;
+    border-radius: 5px;
+    padding: 3px;
+}
+.fixture-match-results{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90px;
+}
+.fixture-match-result-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.fixture-match-result-container > label {
+    font-size: 9px;
+    font-weight: bold;
+}
+.fixture-match-result {
+    width: 15px;
+    height: 15px;
+    text-align: center;
+}
+.fixture-match-result::-webkit-outer-spin-button,
+.fixture-match-result::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.fixture-match-team{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 130px;
+    /* background-color: red; */
+}
+.fixture-match-team > p{
+    font-size: 12px;
+}
+.fixture-match-countries-flag {
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.149);
+}
+
+.fixture-match-date {
+    font-size: 10px;
+    font-weight: bold;
+}
