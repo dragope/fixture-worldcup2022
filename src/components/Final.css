@@ -1,27 +1,30 @@
-.round16{
+.final {
     background-color: rgb(175, 175, 175);
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 220px;
+    height: 150px;
     justify-content: space-around;
     flex-wrap: wrap;
     padding: 10px;
 }
-.round16-title{
+
+.final-title {
     font-size: 20px;
     width: 100%;
     margin-bottom: 0.5%;
 }
-.round16-match-container{
+
+.final-match-container {
     margin-bottom: 0.25%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-.round16-match-container > p {
+
+.final-match-container>p {
     font-size: 12px;
     font-weight: bold;
     width: 100%;

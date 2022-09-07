@@ -12,7 +12,7 @@ function Match({ data, match }) {
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Local Flag" /> 
                     }
-                    <p><b>{data[match.local-1] ? data[match.local-1].name : match.local}</b></p>
+                    <p><b>{data[match.local-1] ? data[match.local-1].name : "Qualified " + match.local}</b></p>
                 </div>
                 <div className='group-stage-group-match-results'>
                     <div className='group-stage-group-match-result-container'>
@@ -29,7 +29,7 @@ function Match({ data, match }) {
                     </div>
                 </div>
                 <div className='group-stage-group-match-team'>
-                    <p><b>{data[match.visitor-1] ? data[match.visitor-1].name : match.visitor}</b></p>
+                    <p><b>{data[match.visitor-1] ? data[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
                     {data[match.visitor-1] ? 
                         <img className="group-stage-group-match-countries-flag" src={data[match.visitor-1].flag} alt="Visitor Flag" /> 
                         : 

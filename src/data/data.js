@@ -654,8 +654,8 @@ const data = {
     thirdplace: [
         {
             matchid: 64, 
-            local: 59, 
-            visitor: 58,
+            local: "loser 62", 
+            visitor: "loser 63",
             stadium: "Doha",
             date: "2022-12-17T12:00:00Z"
         }
