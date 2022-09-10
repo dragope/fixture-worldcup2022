@@ -220,8 +220,7 @@ let data = {
                     stage: "group",
                     group: "A"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "B",
@@ -281,8 +280,7 @@ let data = {
                     stage: "group",
                     group: "B"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "C",
@@ -342,8 +340,7 @@ let data = {
                     stage: "group",
                     group: "C"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "D",
@@ -403,8 +400,7 @@ let data = {
                     stage: "group",
                     group: "D"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "E",
@@ -464,8 +460,7 @@ let data = {
                     stage: "group",
                     group: "E"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "F",
@@ -525,8 +520,7 @@ let data = {
                     stage: "group",
                     group: "F"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "G",
@@ -586,8 +580,7 @@ let data = {
                     stage: "group",
                     group: "G"
                 }
-            ],
-            positions: []
+            ]
         },
         {
             group: "H",
@@ -647,8 +640,7 @@ let data = {
                     stage: "group",
                     group: "H"
                 }
-            ],
-            positions: []
+            ]
         }
     ],
     finalstages: [
