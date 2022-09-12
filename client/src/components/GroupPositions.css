@@ -1,0 +1,53 @@
+.group-positions-container{
+    padding: 2.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    height: 350px;
+}
+.group-positions-indicators {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 350px;
+    margin-bottom: 2.5%;
+    border-bottom: solid 3px black 
+}
+.group-positions-team{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 350px;
+    margin-bottom: 2.5%;
+    border-bottom: solid 0.25px black;
+    font-size: 12px
+}
+.group-position-team-stats{
+    display: flex;
+    flex-direction: row;
+    width: 240px;
+    justify-content: space-around;
+}
+.group-position-team-stats-points{
+    font-weight: bold;
+}
+.group-positions-team-name {
+    font-weight: bold;
+    width: 120px;
+    text-align: left;
+
+}
+.group-positions-team-indicator{
+    width: 100px;
+    text-align: left;
+    font-weight: bold;
+}
+.group-position-team-stats-indicators{
+    display: flex;
+    flex-direction: row;
+    width: 240px;
+    justify-content: space-around;
+    font-weight: bold;
+}

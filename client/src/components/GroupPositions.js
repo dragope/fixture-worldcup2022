@@ -1,34 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
+import './GroupPositions.css'
 
-function GroupPositions({group, close }) {
-
-    const [ positions, setPositions ] = useState([])
+function GroupPositions({ positions }) {
 
     useEffect(()=>{
-        console.log('fetch positions');
-        fetch(`http://localhost:3001/api/get-group/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                group: group.group,
-                countries: group.countries
-            })
-            })
-                .then(res => res.json())
-                .then(data => setPositions(data))
-                .catch(err => console.error(err))
-    }, [])
-
-    console.log(positions)
+        console.log("Positions changed");
+    },[positions])
 
   return (
     <div className='group-positions-container'>
-        <p onClick={()=> close(true)}>X</p>
+        <div className='group-positions-indicators' >
+                <p className="group-positions-team-indicator">Team</p>
+                <div className='group-position-team-stats-indicators'>
+                    <p>Pts</p> 
+                    <p>P</p> 
+                    <p>W</p>  
+                    <p>T</p>  
+                    <p>L</p>  
+                    <p>GF</p>  
+                    <p>GA</p> 
+                    <p>GD</p>
+                </div>
+            </div>
         {positions.groupStats && positions.groupStats.map( position => 
-            <div>
-                <p>{position.country} points: {position.points} won: {position.won} tied: {position.tied} lost: {position.lost} gf: {position.gf} ga:{position.ga} dg: {position.gf - position.ga}</p>
+            <div className='group-positions-team' id={positions.country}>
+                <p className="group-positions-team-name">{position.country}</p>
+                <div className='group-position-team-stats'>
+                    <p className='group-position-team-stats-points'>{position.points}</p> 
+                    <p>{position.played}</p> 
+                    <p>{position.won}</p>  
+                    <p>{position.tied}</p>  
+                    <p>{position.lost}</p>  
+                    <p>{position.gf}</p>  
+                    <p>{position.ga}</p> 
+                    <p>{position.gf - position.ga}</p>
+                </div>
             </div>
         )}
 

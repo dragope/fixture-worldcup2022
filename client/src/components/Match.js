@@ -31,6 +31,7 @@ function Match({ countries, match, id }) {
         })
             .then(res => console.log(res))
         }
+        
     }
 
   return (

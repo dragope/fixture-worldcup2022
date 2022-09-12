@@ -3,11 +3,6 @@ const cors = require('cors')
 const { corsOptions } = require('../config/cors');
 const MatchPlayed = require('../models/MatchPlayed');
 
-
-router.get('/', (req, res)=>{
-    res.send('Index');
-})
-
 router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     const { group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor } = req.body;
     let result = ""
@@ -97,6 +92,7 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
             groupStats[indexVisitor].ga = groupStats[indexVisitor].ga + groupMatches[i].goalsLocal
         }
     }
+    console.log("Get group " + group)
     res.send({groupStats})
 })
 
