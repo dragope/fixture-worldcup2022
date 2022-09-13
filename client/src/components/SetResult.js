@@ -1,7 +1,7 @@
 import React from 'react'
 import './OpenedResult.css'
 
-function SetResult({ savedResult, goalsLocal, goalsVisitor, submited, setSubmited }) {
+function SetResult({ savedResult, goalsLocal, goalsVisitor, setSubmited }) {
   return (
     <div className='group-stage-group-match-results'>
         <div className='group-stage-group-match-result-container'>

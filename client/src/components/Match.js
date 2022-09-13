@@ -21,31 +21,30 @@ function Match({ countries, match, id, getGroupPositions }) {
         setSavedResult(prevMatch)
     }, [matchesPlayed])
 
-    console.log(savedResult)
-
     const handleClick = () => {
         setSubmited(true)
         if(match.stage === "group"){
             fetch('http://localhost:3001/api/group-match/',
-            {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ 
-                group: match.group, 
-                matchid: match.matchid,
-                local: match.local,
-                visitor: match.visitor,
-                countryLocal: countries[match.local-1].name,
-                countryVisitor: countries[match.visitor-1].name,
-                goalsLocal: goalsLocal,
-                goalsVisitor: goalsVisitor,
-            }),
-            mode: 'cors'
-        })
-            .then(res => res.status === 200 && getGroupPositions())
-            .catch(err => console.error(err))
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ 
+                        group: match.group, 
+                        matchid: match.matchid,
+                        local: match.local,
+                        visitor: match.visitor,
+                        countryLocal: countries[match.local-1].name,
+                        countryVisitor: countries[match.visitor-1].name,
+                        goalsLocal: goalsLocal,
+                        goalsVisitor: goalsVisitor,
+                    }),
+                    mode: 'cors'
+                }
+            )
+                .then(res => res.status === 200 && getGroupPositions())
+                .catch(err => console.error(err))
         }
     }
 

@@ -5,7 +5,6 @@ const MatchPlayed = require('../models/MatchPlayed');
 
 router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
     const Matches = await MatchPlayed.find().lean()
-    console.log(Matches)
     res.send(Matches)
 })
 
@@ -32,7 +31,6 @@ router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
         console.log('Modified Match')
     } else {
         await newMatch.save()
-        console.log('New Match')
     }
     res.send({message: `Match ${countryLocal} vs. ${countryVisitor} added`, error: "false"})
 })
@@ -108,7 +106,6 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
             groupStats[indexVisitor].ga = groupStats[indexVisitor].ga + groupMatches[i].goalsLocal
         }
     }
-    console.log("Get group " + group)
     res.send({groupStats})
 })
 

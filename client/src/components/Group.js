@@ -20,7 +20,7 @@ function Group({ group, countries, id }) {
           body: JSON.stringify({
               group: group.group,
               countries: group.countries
-          })
+          }) 
           })
               .then(res => res.json())
               .then(data => data.groupStats.sort((a,b)=>{
