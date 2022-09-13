@@ -1,12 +1,27 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './Match.css'
 import GenericFlag from '../images/icons8-flag-96.png'
+import { useFixtureContext } from '../context/fixtureContext'
+import OpenedResult from './OpenedResult'
+import SetResult from './SetResult'
 
-function Match({ countries, match, id }) {
+function Match({ countries, match, id, getGroupPositions }) {
 
-    const [ submited, setSubmited ] = useState(false)
+    const { matchesPlayed } = useFixtureContext()
+    const [ submited, setSubmited ] = useState(false)    
     const [ goalsLocal, setGoalsLocal ] = useState(0)
     const [ goalsVisitor, setGoalsVisitor ] = useState(0)
+    const [ savedResult, setSavedResult ] = useState([])
+
+    useEffect(()=>{
+        const prevMatch = matchesPlayed.filter( x => x.matchid === id)
+        if(prevMatch[0]){
+            setSubmited(true)
+        }
+        setSavedResult(prevMatch)
+    }, [matchesPlayed])
+
+    console.log(savedResult)
 
     const handleClick = () => {
         setSubmited(true)
@@ -29,9 +44,9 @@ function Match({ countries, match, id }) {
             }),
             mode: 'cors'
         })
-            .then(res => console.log(res))
+            .then(res => res.status === 200 && getGroupPositions())
+            .catch(err => console.error(err))
         }
-        
     }
 
   return (
@@ -45,26 +60,17 @@ function Match({ countries, match, id }) {
                     }
                     <p><b>{countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
                 </div>
-                <div className='group-stage-group-match-results'>
-                    <div className='group-stage-group-match-result-container'>
-                        <input 
-                            type="number" 
-                            placeholder='0'
-                            value={goalsLocal}
-                            className='group-stage-group-match-result'
-                            onChange={ e => setGoalsLocal(e.target.value) }
-                        />
-                    </div>
-                    { submited ? <button onClick={()=> setSubmited(false)}>Modify</button> : <button onClick={handleClick}>Set</button> }
-                    <div className='group-stage-group-match-result-container'>
-                        <input 
-                            type="number" 
-                            value={goalsVisitor} 
-                            className='group-stage-group-match-result'
-                            onChange={ e => setGoalsVisitor(e.target.value) }
-                        />
-                    </div>
-                </div>
+                { savedResult[0] ? 
+                    submited ?
+                        <SetResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                        :
+                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                    :
+                    !submited ?
+                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                        :
+                        <SetResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                }
                 <div className='group-stage-group-match-team'>
                     <p><b>{countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
                     {countries[match.visitor-1] ? 

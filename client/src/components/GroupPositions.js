@@ -1,11 +1,7 @@
-import React, { useEffect} from 'react'
+import React from 'react'
 import './GroupPositions.css'
 
 function GroupPositions({ positions }) {
-
-    useEffect(()=>{
-        console.log("Positions changed");
-    },[positions])
 
   return (
     <div className='group-positions-container'>
@@ -22,7 +18,7 @@ function GroupPositions({ positions }) {
                     <p>GD</p>
                 </div>
             </div>
-        {positions.groupStats && positions.groupStats.map( position => 
+        {positions && positions.map( position => 
             <div className='group-positions-team' id={positions.country}>
                 <p className="group-positions-team-name">{position.country}</p>
                 <div className='group-position-team-stats'>

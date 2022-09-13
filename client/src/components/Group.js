@@ -23,9 +23,18 @@ function Group({ group, countries, id }) {
           })
           })
               .then(res => res.json())
-              .then(data => setPositions(data))
-              .then(console.log(positions))
-              .then(console.log("Positions gotten"))
+              .then(data => data.groupStats.sort((a,b)=>{
+                  if(b.points === a.points){
+                    if((b.gf - b.ga) === (a.gf - a.ga)){
+                      return b.gf - a.gf
+                    } else {
+                      return (b.gf - b.ga) - (a.gf - a.ga)
+                    }
+                  } else {
+                    return b.points - a.points;
+                  }
+                }))
+              .then(pos => setPositions(pos))
               .catch(err => console.error(err))
   }
 
@@ -34,9 +43,8 @@ function Group({ group, countries, id }) {
       <div className="group-stage-group">
         <h1 className='group-stage-group-name'>Group { group.group }</h1>
         {
-            group.matches.map( match => <Match id={match.matchid} match={match} countries={countries}/> )
+            group.matches.map( match => <Match id={match.matchid} match={match} countries={countries} getGroupPositions={()=> getGroupPositions()}/> )
         }
-        <button onClick={()=> getGroupPositions()}>Get Group {group.group} Positions</button>
       </div>  
         <GroupPositions positions={positions}/>
     </div>

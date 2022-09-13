@@ -3,6 +3,12 @@ const cors = require('cors')
 const { corsOptions } = require('../config/cors');
 const MatchPlayed = require('../models/MatchPlayed');
 
+router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
+    const Matches = await MatchPlayed.find().lean()
+    console.log(Matches)
+    res.send(Matches)
+})
+
 router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     const { group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor } = req.body;
     let result = ""
@@ -28,6 +34,7 @@ router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
         await newMatch.save()
         console.log('New Match')
     }
+    res.send({message: `Match ${countryLocal} vs. ${countryVisitor} added`, error: "false"})
 })
 
 router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
@@ -35,12 +42,15 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
     const groupMatches = await MatchPlayed.find({ group: group }).lean();
     const groupStats = []
     for (let i = 0; i < countries.length; i++){
-        groupStats.push({country: countries[i], played: 0, points: 0 ,won: 0, tied: 0, lost: 0, gf: 0, ga: 0})
+        groupStats.push({country: countries[i], countryid: 0, played: 0, points: 0 ,won: 0, tied: 0, lost: 0, gf: 0, ga: 0})
     }
     for(let i = 0; i < groupMatches.length; i++){
         if(groupMatches[i].result === "tie"){
             let indexLocal = groupStats.findIndex(x => x.country == groupMatches[i].countryLocal)
             let indexVisitor = groupStats.findIndex(x => x.country == groupMatches[i].countryVisitor)
+            //Countryid
+            groupStats[indexLocal].countryid = groupMatches[i].local
+            groupStats[indexVisitor].countryid = groupMatches[i].visitor
             // Jugados
             groupStats[indexLocal].played = groupStats[indexLocal].played + 1
             groupStats[indexVisitor].played = groupStats[indexVisitor].played + 1
@@ -59,6 +69,9 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
         } else if(groupMatches[i].result === "local"){
             let indexLocal = groupStats.findIndex(x => x.country == groupMatches[i].countryLocal)
             let indexVisitor = groupStats.findIndex(x => x.country == groupMatches[i].countryVisitor)
+            //Countryid
+            groupStats[indexLocal].countryid = groupMatches[i].local
+            groupStats[indexVisitor].countryid = groupMatches[i].visitor
             //Jugados
             groupStats[indexLocal].played = groupStats[indexLocal].played + 1
             groupStats[indexVisitor].played = groupStats[indexVisitor].played + 1
@@ -76,6 +89,9 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
         } else {
             let indexLocal = groupStats.findIndex(x => x.country == groupMatches[i].countryLocal)
             let indexVisitor = groupStats.findIndex(x => x.country == groupMatches[i].countryVisitor)
+            //Countryid
+            groupStats[indexLocal].countryid = groupMatches[i].local
+            groupStats[indexVisitor].countryid = groupMatches[i].visitor
             // Jugados
             groupStats[indexLocal].played = groupStats[indexLocal].played + 1
             groupStats[indexVisitor].played = groupStats[indexVisitor].played + 1

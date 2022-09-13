@@ -1,13 +1,15 @@
 import './App.css';
 import GroupStage from './components/GroupStage';
 import FinalStages from './components/FinalStages';
+import FixtureContextProvider from './context/fixtureContext';
 
 function App() {
   return (
     <div className="App">
-      <GroupStage />
-      <FinalStages />
-
+      <FixtureContextProvider>
+          <GroupStage />
+          <FinalStages />
+      </FixtureContextProvider>
     </div>
   );
 }
