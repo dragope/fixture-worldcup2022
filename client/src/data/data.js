@@ -102,7 +102,7 @@ let data = {
             },
             {
                 countryid: 21,
-                name: "Belguim",
+                name: "Belgium",
                 flag: "https://firebasestorage.googleapis.com/v0/b/fixture-mundial-48fb2.appspot.com/o/icons8-belgium-96.png?alt=media&token=dc9ff0d3-646e-4e25-8d8b-832ea458a47e"
             }, 
             {

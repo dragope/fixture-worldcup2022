@@ -1,5 +1,5 @@
 import React from 'react'
-import './OpenedResult.css'
+import './Result.css'
 
 function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, setGoalsVisitor, submited, setSubmited, handleClick }) {
   return (

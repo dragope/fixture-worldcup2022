@@ -5,13 +5,14 @@ import { useFixtureContext } from '../context/fixtureContext'
 import OpenedResult from './OpenedResult'
 import SetResult from './SetResult'
 
-function Match({ countries, match, id, getGroupPositions }) {
+function Match({ countries, match, id, getGroupPositions, round }) {
 
     const { matchesPlayed } = useFixtureContext()
     const [ submited, setSubmited ] = useState(false)    
     const [ goalsLocal, setGoalsLocal ] = useState(0)
     const [ goalsVisitor, setGoalsVisitor ] = useState(0)
     const [ savedResult, setSavedResult ] = useState([])
+    const [ matchContenders, setMatchContenders ] = useState({})
 
     useEffect(()=>{
         const prevMatch = matchesPlayed.filter( x => x.matchid === id)
@@ -20,6 +21,13 @@ function Match({ countries, match, id, getGroupPositions }) {
         }
         setSavedResult(prevMatch)
     }, [matchesPlayed])
+
+    useEffect(()=>{
+        if(round){
+            let match = round.filter(x => x.matchid === id)
+            setMatchContenders(match)
+        }
+    }, [round])
 
     const handleClick = () => {
         setSubmited(true)
@@ -48,16 +56,21 @@ function Match({ countries, match, id, getGroupPositions }) {
         }
     }
 
+    if(matchContenders[0]){ console.log(matchContenders) }
+
   return (
         <div id={id} className="group-stage-group-match">
             <div className='group-stage-group-match-countries'>
                 <div className='group-stage-group-match-team'>
-                    {countries[match.local-1] ? 
+                    {matchContenders[0] ?
+                        <img className="group-stage-group-match-countries-flag" src={matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].flag : GenericFlag} alt="Local Flag" /> 
+                        :
+                        countries[match.local-1] ? 
                         <img className="group-stage-group-match-countries-flag" src={countries[match.local-1].flag} alt="Local Flag" /> 
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Local Flag" /> 
                     }
-                    <p><b>{countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
+                    <p><b>{matchContenders[0] ? matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].name : "Qualified " + match.local : countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
                 </div>
                 { savedResult[0] ? 
                     submited ?
@@ -71,8 +84,11 @@ function Match({ countries, match, id, getGroupPositions }) {
                         <SetResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
                 }
                 <div className='group-stage-group-match-team'>
-                    <p><b>{countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
-                    {countries[match.visitor-1] ? 
+                    <p><b>{matchContenders[0] ? matchContenders[0].countryVisitor.length > 2 ? countries[Number(matchContenders[0].visitor)-1].name : "Qualified " + match.visitor : countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
+                    {matchContenders[0] ?
+                        <img className="group-stage-group-match-countries-flag" src={matchContenders[0].countryVisitor.length > 2 ? countries[Number(matchContenders[0].visitor)-1].flag : GenericFlag} alt="Local Flag" /> 
+                        :
+                        countries[match.visitor-1] ? 
                         <img className="group-stage-group-match-countries-flag" src={countries[match.visitor-1].flag} alt="Visitor Flag" /> 
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Visitor Flag" />

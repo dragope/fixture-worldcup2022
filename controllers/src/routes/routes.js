@@ -2,6 +2,8 @@ const router = require('express').Router();
 const cors = require('cors')
 const { corsOptions } = require('../config/cors');
 const MatchPlayed = require('../models/MatchPlayed');
+const Round16Played = require('../models/Round16Played')
+const Round16 = require('../models/Round16')
 
 router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
     const Matches = await MatchPlayed.find().lean()
@@ -107,6 +109,58 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
         }
     }
     res.send({groupStats})
+})
+
+router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
+    const { first, second } = req.body;
+    const match_1 = await Round16.find({ local: first.qualified })
+    const match_2 = await Round16.find({ visitor: second.qualified })
+    const match_1_played = await Round16Played.find({ matchid: match_1[0].matchid })
+    const match_2_played = await Round16Played.find({ matchid: match_2[0].matchid })
+
+    if(first.countryid !== 0 && second.countryid !== 0){
+        // First
+        if(match_1_played[0]){
+            await Round16Played.findOneAndUpdate({ matchid: match_1[0].matchid }, { local: first.countryid, countryLocal: first.country })
+        } else{
+            const newRound16_1 = new Round16Played({ 
+                matchid: match_1[0].matchid,
+                local: first.countryid.toString(), 
+                visitor: match_1[0].visitor,
+                countryLocal: first.country,
+                countryVisitor: match_1[0].visitor.toString(),
+                goalsLocal: 0, 
+                goalsVisitor: 0, 
+                result: "tie", 
+                stadium: match_1[0].stadium, 
+                date: match_1[0].date
+            })
+            
+            await newRound16_1.save()
+        }
+        //Second
+        if(match_2_played[0]){
+            await Round16Played.findOneAndUpdate({ matchid: match_2[0].matchid }, { visitor: second.countryid, countryVisitor: second.country })
+        } else{
+            const newRound16_2 = new Round16Played({ 
+                matchid: match_2[0].matchid, 
+                local: match_2[0].local, 
+                visitor: second.countryid.toString(),
+                countryLocal: match_2[0].local.toString(),
+                countryVisitor: second.country,
+                goalsLocal: 0, 
+                goalsVisitor: 0, 
+                result: "tie", 
+                stadium: match_2[0].stadium, 
+                date: match_2[0].date
+            })
+            await newRound16_2.save()
+        }
+    }
+
+    const newRound16 = await Round16Played.find().lean()
+
+    res.send({ message: `Updated match ${match_1[0].matchid} and  ${match_2[0].matchid}`, updatedRound: newRound16 })
 })
 
 module.exports = router

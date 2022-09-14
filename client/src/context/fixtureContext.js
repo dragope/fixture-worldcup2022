@@ -8,6 +8,11 @@ function FixtureContextProvider({ children }){
 
     const [ matchesPlayed, setMatchesPlayed ] = useState([])
     const [ load, setLoad ] = useState(true)
+    const [ round16, setRound16 ] = useState([])
+    const [ quarterfinals, setQuarterfinals ] = useState([])
+    const [ semifinals, setSemifinals ] = useState([])
+    const [ thirdPlace, setThirdPlace ] = useState([])
+    const [ final, setFinal ] = useState([])
 
     const getMatchesPlayed = () => {
         fetch(`http://localhost:3001/api/get-matches-played/`)
@@ -22,8 +27,20 @@ function FixtureContextProvider({ children }){
             getMatchesPlayed,
             matchesPlayed,
             load,
-            setLoad
+            setLoad,
+            round16,
+            setRound16,
+            quarterfinals,
+            setQuarterfinals,
+            semifinals,
+            setSemifinals,
+            thirdPlace,
+            setThirdPlace,
+            final,
+            setFinal
         }}>
+
+
             {children}
         </FixtureContext.Provider>
     )
