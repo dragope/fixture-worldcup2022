@@ -4,17 +4,19 @@ import GroupPositions from './GroupPositions'
 import Match from './Match'
 import { useFixtureContext } from '../context/fixtureContext'
 
-function Group({ group, countries, id }) {
+function Group({ group, countries }) {
 
   const [ positions, setPositions ] = useState([])
   const { setRound16 } = useFixtureContext()
 
   useEffect(()=>{
     getGroupPositions()
+    // eslint-disable-next-line
   }, [])
 
   useEffect(()=>{
     getRound16()
+    // eslint-disable-next-line
   }, [positions])
 
   function getGroupPositions(){
@@ -64,14 +66,14 @@ function Group({ group, countries, id }) {
   }
 
   return (
-    <div className='group-stage-group-container' id={id}>
+    <div className='group-stage-group-container'>
       <div className="group-stage-group">
         <h1 className='group-stage-group-name'>Group { group.group }</h1>
         {
-            group.matches.map( match => <Match id={match.matchid} match={match} countries={countries} getGroupPositions={()=> getGroupPositions()}/> )
+            group.matches.map( match => <Match key={match.matchid} id={match.matchid} match={match} countries={countries} getGroupPositions={()=> getGroupPositions()}/> )
         }
       </div>  
-        <GroupPositions positions={positions}/>
+        <GroupPositions key={"positions"+group.group} positions={positions}/>
     </div>
   )
 }

@@ -4,6 +4,8 @@ const { corsOptions } = require('../config/cors');
 const MatchPlayed = require('../models/MatchPlayed');
 const Round16Played = require('../models/Round16Played')
 const Round16 = require('../models/Round16')
+const Quarterfinals = require('../models/Quarterfinals')
+const QuarterfinalsPlayed = require('../models/QuarterfinalsPlayed')
 
 router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
     const Matches = await MatchPlayed.find().lean()
@@ -124,6 +126,7 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
             await Round16Played.findOneAndUpdate({ matchid: match_1[0].matchid }, { local: first.countryid, countryLocal: first.country })
         } else{
             const newRound16_1 = new Round16Played({ 
+                stage: "round of 16",
                 matchid: match_1[0].matchid,
                 local: first.countryid.toString(), 
                 visitor: match_1[0].visitor,
@@ -143,6 +146,7 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
             await Round16Played.findOneAndUpdate({ matchid: match_2[0].matchid }, { visitor: second.countryid, countryVisitor: second.country })
         } else{
             const newRound16_2 = new Round16Played({ 
+                stage: "round of 16",
                 matchid: match_2[0].matchid, 
                 local: match_2[0].local, 
                 visitor: second.countryid.toString(),
@@ -161,6 +165,47 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
     const newRound16 = await Round16Played.find().lean()
 
     res.send({ message: `Updated match ${match_1[0].matchid} and  ${match_2[0].matchid}`, updatedRound: newRound16 })
+})
+
+router.post('/api/final-stages/', cors(corsOptions), async (req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    const prevMatch = await Round16Played.find({ matchid: matchid }).lean()
+    let result = ""
+    if(goalsLocal > goalsVisitor){
+        result = "local"
+    } else {
+        result = "visitor"
+    }
+    if(prevMatch){
+        await Round16Played.findOneAndUpdate({ matchid: matchid }, { goalsLocal: goalsLocal, goalsVisitor: goalsVisitor, result: result})
+    } else {
+        const newMatch = new Round16Played({
+            stage: stage,
+            matchid: matchid,
+            local: local,
+            visitor: visitor,
+            countryLocal: countryLocal,
+            countryVisitor: countryVisitor,
+            goalsLocal: goalsLocal,
+            goalsVisitor: goalsVisitor,
+            result: result,
+            stadium: stadium,
+            date: date
+        })
+        await newMatch.save()
+    }
+
+    //Encuentra el encuentro en la BD de Quarterfinals
+    const prevMatchQF= await Quarterfinals.find({ local: matchid } || { visitor: matchid}).lean()
+    //ID que sirve para buscar a ver si hay ya QuarterfinalsPlayed
+    console.log(prevMatchQF[0].matchid)
+
+    //Queda, primero, hacer búsqueda en QFP a ver si ya está el partido y hay que actualizarlo. Si no hay que actualizarlo, hay que guardar uno nuevo
+
+    
+
+
+
 })
 
 module.exports = router

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
-const Round16PlayedSchema = new Schema({
+const QuarterfinalslayedSchema = new Schema({
     stage: { type: String, required: true },
     matchid: { type: Number, required: true },
     local: { type: String, required: true },
@@ -15,4 +15,4 @@ const Round16PlayedSchema = new Schema({
     date: { type: Date, required: true },
 });
 
-module.exports = mongoose.model('Round16Played', Round16PlayedSchema)
+module.exports = mongoose.model('QuarterfinalsPlayed', QuarterfinalslayedSchema)

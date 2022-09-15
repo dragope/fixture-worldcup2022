@@ -5,9 +5,9 @@ import { useFixtureContext } from '../context/fixtureContext'
 import OpenedResult from './OpenedResult'
 import SetResult from './SetResult'
 
-function Match({ countries, match, id, getGroupPositions, round }) {
+function Match({ countries, match, getGroupPositions, round }) {
 
-    const { matchesPlayed } = useFixtureContext()
+    const { matchesPlayed, setModal } = useFixtureContext()
     const [ submited, setSubmited ] = useState(false)    
     const [ goalsLocal, setGoalsLocal ] = useState(0)
     const [ goalsVisitor, setGoalsVisitor ] = useState(0)
@@ -15,21 +15,23 @@ function Match({ countries, match, id, getGroupPositions, round }) {
     const [ matchContenders, setMatchContenders ] = useState({})
 
     useEffect(()=>{
-        const prevMatch = matchesPlayed.filter( x => x.matchid === id)
+        const prevMatch = matchesPlayed.filter( x => x.matchid === match.matchid)
         if(prevMatch[0]){
             setSubmited(true)
         }
         setSavedResult(prevMatch)
+        // eslint-disable-next-line
     }, [matchesPlayed])
 
     useEffect(()=>{
         if(round){
-            let match = round.filter(x => x.matchid === id)
-            setMatchContenders(match)
+            let contenders = round.filter(x => x.matchid === match.matchid)
+            setMatchContenders(contenders)
         }
+        // eslint-disable-next-line
     }, [round])
 
-    const handleClick = () => {
+    const submitResult = () => {
         setSubmited(true)
         if(match.stage === "group"){
             fetch('http://localhost:3001/api/group-match/',
@@ -54,12 +56,32 @@ function Match({ countries, match, id, getGroupPositions, round }) {
                 .then(res => res.status === 200 && getGroupPositions())
                 .catch(err => console.error(err))
         }
+        if(match.stage === "round of 16"){
+            fetch('http://localhost:3001/api/final-stages/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    matchid: match.matchid,
+                    stage: match.stage,
+                    local: countries[Number(matchContenders[0].local)-1].countryid, 
+                    visitor: countries[Number(matchContenders[0].visitor)-1].countryid,
+                    countryLocal: countries[Number(matchContenders[0].local)-1].name,
+                    countryVisitor: countries[Number(matchContenders[0].visitor)-1].name,
+                    goalsLocal: goalsLocal, 
+                    goalsVisitor: goalsVisitor,
+                    stadium: match.stadium,
+                    date: match.date
+                })
+            })
+            .then(res => res.json())
+            .catch(err => console.error(err))
+        }
     }
 
-    if(matchContenders[0]){ console.log(matchContenders) }
-
   return (
-        <div id={id} className="group-stage-group-match">
+        <div className="group-stage-group-match">
             <div className='group-stage-group-match-countries'>
                 <div className='group-stage-group-match-team'>
                     {matchContenders[0] ?
@@ -74,14 +96,14 @@ function Match({ countries, match, id, getGroupPositions, round }) {
                 </div>
                 { savedResult[0] ? 
                     submited ?
-                        <SetResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                        <SetResult savedResult={savedResult} setSubmited={setSubmited} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} />
                         :
-                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submitResult={submitResult} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} setModal={setModal} />
                     :
                     !submited ?
-                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submitResult={submitResult} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} setModal={setModal} />
                         :
-                        <SetResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submited={submited} setSubmited={setSubmited} handleClick={handleClick} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor}/>
+                        <SetResult savedResult={savedResult} setSubmited={setSubmited} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} />
                 }
                 <div className='group-stage-group-match-team'>
                     <p><b>{matchContenders[0] ? matchContenders[0].countryVisitor.length > 2 ? countries[Number(matchContenders[0].visitor)-1].name : "Qualified " + match.visitor : countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>

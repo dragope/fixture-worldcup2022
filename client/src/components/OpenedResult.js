@@ -1,7 +1,16 @@
 import React from 'react'
 import './Result.css'
 
-function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, setGoalsVisitor, submited, setSubmited, handleClick }) {
+function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, setGoalsVisitor, stage, submitResult, setModal }) {
+
+    const handleClick = () => {
+        if(stage !== "group" && goalsLocal === goalsVisitor){
+           setModal(true)
+        } else {
+            submitResult()
+        }
+    }
+
   return (
     <div className='group-stage-group-match-results'>
         <div className='group-stage-group-match-result-container'>
