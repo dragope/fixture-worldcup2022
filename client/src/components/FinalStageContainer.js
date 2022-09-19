@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Match from './Match'
 import './FinalStageContainer.css'
 import { useFixtureContext } from '../context/fixtureContext'
 
-function FinalStageContainer({ stage, countries, id }) {
+function FinalStageContainer({ stage, countries }) {
 
   const { round16, quarterfinals, semifinals, thirdPlace, final } = useFixtureContext()
+
+  useEffect(()=>{}, [round16, quarterfinals, semifinals, thirdPlace, final])
 
   return (
     <div className='final-stage-container' >

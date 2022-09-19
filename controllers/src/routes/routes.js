@@ -6,12 +6,18 @@ const Round16Played = require('../models/Round16Played')
 const Round16 = require('../models/Round16')
 const Quarterfinals = require('../models/Quarterfinals')
 const QuarterfinalsPlayed = require('../models/QuarterfinalsPlayed')
+const Semifinals = require('../models/Semifinals')
+const SemifinalsPlayed = require('../models/SemifinalsPlayed')
 
+//Obtener todos los partidos jugados para que se carguen cuando se inicia la página
 router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
-    const Matches = await MatchPlayed.find().lean()
+    const GroupMatches = await MatchPlayed.find().lean()
+    const Round16Matches = await Round16Played.find().lean()
+    const QuarterfinalsMatches = await QuarterfinalsPlayed.find().lean()
+    const Matches = GroupMatches.concat(Round16Matches, QuarterfinalsMatches)
     res.send(Matches)
 })
-
+//Actualizar partidos de grupo
 router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     const { group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor } = req.body;
     let result = ""
@@ -38,7 +44,7 @@ router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     }
     res.send({message: `Match ${countryLocal} vs. ${countryVisitor} added`, error: "false"})
 })
-
+//Obtener las posiciones del grupo
 router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
     const { group, countries } = req.body
     const groupMatches = await MatchPlayed.find({ group: group }).lean();
@@ -112,7 +118,7 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
     }
     res.send({groupStats})
 })
-
+//Definir los equipos que clasifican a Octavos de acuerdo a la posición en la tabla de los grupos
 router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
     const { first, second } = req.body;
     const match_1 = await Round16.find({ local: first.qualified })
@@ -166,8 +172,8 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
 
     res.send({ message: `Updated match ${match_1[0].matchid} and  ${match_2[0].matchid}`, updatedRound: newRound16 })
 })
-
-router.post('/api/final-stages/', cors(corsOptions), async (req, res)=>{
+//Actaulizar resultados de partidos de Octavos y a la vez el clasificado al correspondiente partido de Cuartos
+router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
     const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
     const prevMatch = await Round16Played.find({ matchid: matchid }).lean()
     let result = ""
@@ -194,18 +200,178 @@ router.post('/api/final-stages/', cors(corsOptions), async (req, res)=>{
         })
         await newMatch.save()
     }
+    const prevMatchQF = await Quarterfinals.find({ $or: [{ local: matchid }, { visitor: matchid }]}).lean()
+    const prevMatchQF_P = await QuarterfinalsPlayed.find({ $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
+    if(prevMatchQF_P[0]){
+        if(matchid === prevMatchQF[0].local){
+            await QuarterfinalsPlayed.findOneAndUpdate({ _id: prevMatchQF_P[0]._id }, {
+                stage: prevMatchQF_P[0].stage,
+                matchid: prevMatchQF_P[0].matchid,
+                local: result === 'local' ? local : visitor,
+                visitor: prevMatchQF_P[0].visitor,
+                countryLocal: result === 'local' ? countryLocal : countryVisitor,
+                countryVisitor: prevMatchQF_P[0].countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchQF_P[0].stadium,
+                date: prevMatchQF_P[0].date,
+            })
+        } else if(matchid == prevMatchQF[0].visitor){
+            await QuarterfinalsPlayed.findOneAndUpdate({ _id: prevMatchQF_P[0]._id }, {
+                stage: prevMatchQF_P[0].stage,
+                matchid: prevMatchQF_P[0].matchid,
+                local: prevMatchQF_P[0].local,
+                visitor: result === 'local' ? local : visitor,
+                countryLocal: prevMatchQF_P[0].countryLocal,
+                countryVisitor: result === 'local' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchQF_P[0].stadium,
+                date: prevMatchQF_P[0].date,
+            })
+        }
+    } else {
+        if(matchid === prevMatchQF[0].local){
+            const newQF = new QuarterfinalsPlayed({
+                stage: prevMatchQF[0].stage,
+                matchid: prevMatchQF[0].matchid,
+                local: result === 'local' ? local : visitor,
+                visitor: prevMatchQF[0].visitor,
+                countryLocal: result === 'local' ? countryLocal : countryVisitor,
+                countryVisitor: prevMatchQF[0].visitor.toString(),
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchQF[0].stadium,
+                date: prevMatchQF[0].date,
+            })
+            await newQF.save()
+        } else if(matchid === prevMatchQF[0].visitor){
+            const newQF = new QuarterfinalsPlayed({
+                stage: prevMatchQF[0].stage,
+                matchid: prevMatchQF[0].matchid,
+                local: prevMatchQF[0].local,
+                visitor: result === 'local' ? local : visitor,
+                countryLocal: prevMatchQF[0].local.toString(),
+                countryVisitor: result === 'local' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchQF[0].stadium,
+                date: prevMatchQF[0].date,
+            })
+            await newQF.save()
+        }
+    }
+res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}`})
+})
+//Obtener los cruces de Cuartos de final
+router.get('/api/get-quarterfinals/', cors(corsOptions), async (req, res)=> {
+    const quarterfinals = await QuarterfinalsPlayed.find().lean()
+    res.send(quarterfinals)
+})
+//Definir los resultados de cuartos y escribir los cruces de Semis
+router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    // console.log(req.body)
+    let result = ""
+    if(goalsLocal > goalsVisitor){
+        result = "local"
+    } else {
+        result = "visitor"
+    }
+    const prevMatchSF = await Semifinals.find({ $or: [{local: matchid}, {visitor: matchid}] })
+    if(prevMatchSF){
+        await QuarterfinalsPlayed.findOneAndUpdate({ matchid: matchid }, {
+            stage: stage,
+            matchid: matchid,
+            local: local,
+            visitor: visitor,
+            countryLocal: countryLocal,
+            countryVisitor: countryVisitor,
+            goalsLocal: goalsLocal,
+            goalsVisitor: goalsVisitor,
+            result: result,
+            stadium: stadium,
+            date: date
+        })
+    }
 
-    //Encuentra el encuentro en la BD de Quarterfinals
-    // const prevMatchQF = await Quarterfinals.find({ local: matchid } || { visitor: matchid}).lean()
-    //ID que sirve para buscar a ver si hay ya QuarterfinalsPlayed
-    // console.log(prevMatchQF[0].matchid)
-
-    //Queda, primero, hacer búsqueda en QFP a ver si ya está el partido y hay que actualizarlo. Si no hay que actualizarlo, hay que guardar uno nuevo
-
+    const prevMatchSF_P = await SemifinalsPlayed.find({ $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
     
 
+    if(prevMatchSF_P[0]){
+        if(matchid === prevMatchSF[0].local){
+            await SemifinalsPlayed.findOneAndUpdate({ _id: prevMatchSF_P[0]._id }, {
+                stage: prevMatchSF_P[0].stage,
+                matchid: prevMatchSF_P[0].matchid,
+                local: result === 'local' ? local : visitor,
+                visitor: prevMatchSF_P[0].visitor,
+                countryLocal: result === 'local' ? countryLocal : countryVisitor,
+                countryVisitor: prevMatchSF_P[0].countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchSF_P[0].stadium,
+                date: prevMatchSF_P[0].date,
+            })
+        } else if(matchid == prevMatchSF[0].visitor){
+            await SemifinalsPlayed.findOneAndUpdate({ _id: prevMatchSF_P[0]._id }, {
+                stage: prevMatchSF_P[0].stage,
+                matchid: prevMatchSF_P[0].matchid,
+                local: prevMatchSF_P[0].local,
+                visitor: result === 'local' ? local : visitor,
+                countryLocal: prevMatchSF_P[0].countryLocal,
+                countryVisitor: result === 'local' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchSF_P[0].stadium,
+                date: prevMatchSF_P[0].date,
+            })
+        }
+    } else {
+        if(matchid === prevMatchSF[0].local){
+            const newSF = new SemifinalsPlayed({
+                stage: prevMatchSF[0].stage,
+                matchid: prevMatchSF[0].matchid,
+                local: result === 'local' ? local : visitor,
+                visitor: prevMatchSF[0].visitor,
+                countryLocal: result === 'local' ? countryLocal : countryVisitor,
+                countryVisitor: prevMatchSF[0].visitor.toString(),
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchSF[0].stadium,
+                date: prevMatchSF[0].date,
+            })
+            await newSF.save()
+        } else if(matchid === prevMatchSF[0].visitor){
+            const newSF = new SemifinalsPlayed({
+                stage: prevMatchSF[0].stage,
+                matchid: prevMatchSF[0].matchid,
+                local: prevMatchSF[0].local,
+                visitor: result === 'local' ? local : visitor,
+                countryLocal: prevMatchSF[0].local.toString(),
+                countryVisitor: result === 'local' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchSF[0].stadium,
+                date: prevMatchSF[0].date,
+            })
+            await newSF.save()
+        }
+    }
+res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}`})
+})
 
-
+//Obtener los cruces de semifinales
+router.get('/api/get-semifinals/', cors(corsOptions), async (req, res)=> {
+    const semifinals = await SemifinalsPlayed.find().lean()
+    res.send(semifinals)
 })
 
 module.exports = router

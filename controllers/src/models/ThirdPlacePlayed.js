@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
-const QuarterfinalslayedSchema = new Schema({
+const ThirdPlacePlayedSchema = new Schema({
     stage: { type: String, required: true },
     matchid: { type: Number, required: true },
-    local: { type: Number, required: true },
-    visitor: { type: Number, required: true },
+    local: { type: String, required: true },
+    visitor: { type: String, required: true },
     countryLocal: { type: String, required: true },
     countryVisitor: { type: String, required: true },
     goalsLocal: { type: Number, required: true },
@@ -15,4 +15,4 @@ const QuarterfinalslayedSchema = new Schema({
     date: { type: Date, required: true },
 });
 
-module.exports = mongoose.model('QuarterfinalsPlayed', QuarterfinalslayedSchema)
+module.exports = mongoose.model('ThirdPlacePlayed', ThirdPlacePlayedSchema)

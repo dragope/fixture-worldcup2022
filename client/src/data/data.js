@@ -672,7 +672,7 @@ let data = {
                     stage: "round of 16"
                 },
                 {
-                    matchid: 53, 
+                    matchid: 52, 
                     local: "D1", 
                     visitor: "C2",
                     stadium: "Doha",
@@ -680,7 +680,7 @@ let data = {
                     stage: "round of 16"
                 },
                 {
-                    matchid: 54, 
+                    matchid: 53, 
                     local: "E1", 
                     visitor: "F2",
                     stadium: "Al Wakrah",
@@ -688,7 +688,7 @@ let data = {
                     stage: "round of 16"
                 },
                 {
-                    matchid: 55, 
+                    matchid: 54, 
                     local: "G1", 
                     visitor: "H2",
                     stadium: "Doha",
@@ -696,7 +696,7 @@ let data = {
                     stage: "round of 16"
                 },
                 {
-                    matchid: 56, 
+                    matchid: 55, 
                     local: "F1", 
                     visitor: "E2",
                     stadium: "Doha",
@@ -704,7 +704,7 @@ let data = {
                     stage: "round of 16"
                 },
                 {
-                    matchid: 57, 
+                    matchid: 56, 
                     local: "H1", 
                     visitor: "G2",
                     stadium: "Lusail",
@@ -717,15 +717,15 @@ let data = {
             name: "Quarterfinals",
             matches: [
                 {
-                    matchid: 58, 
-                    local: 54, 
-                    visitor: 55,
+                    matchid: 57, 
+                    local: 53, 
+                    visitor: 54,
                     stadium: "Doha",
                     date: "2022-12-09T12:00:00Z",
                     stage: "quarterfinals"
                 },
                 {
-                    matchid: 59, 
+                    matchid: 58, 
                     local: 49, 
                     visitor: 50,
                     stadium: "Lusail",
@@ -733,15 +733,15 @@ let data = {
                     stage: "quarterfinals"
                 },
                 {
-                    matchid: 60, 
-                    local: 56, 
-                    visitor: 57,
+                    matchid: 59, 
+                    local: 55, 
+                    visitor: 56,
                     stadium: "Doha",
                     date: "2022-12-10T12:00:00Z",
                     stage: "quarterfinals"
                 },
                 {
-                    matchid: 61, 
+                    matchid: 60, 
                     local: 51, 
                     visitor: 52,
                     stadium: "Jor",
@@ -754,17 +754,17 @@ let data = {
             name: "Semifinals",
             matches: [
                 {
-                    matchid: 62, 
-                    local: 59, 
-                    visitor: 58,
+                    matchid: 61, 
+                    local: 58, 
+                    visitor: 57,
                     stadium: "Lusail",
                     date: "2022-12-13T16:00:00Z",
                     stage: "semifinals"
                 },
                 {
-                    matchid: 63, 
-                    local: 61, 
-                    visitor: 62,
+                    matchid: 62, 
+                    local: 60, 
+                    visitor: 59,
                     stadium: "Jor",
                     date: "2022-12-14T16:00:00Z",
                     stage: "semifinals"
@@ -775,9 +775,9 @@ let data = {
             name: "Third Place",
             matches: [
                 {
-                    matchid: 64, 
-                    local: "loser 62", 
-                    visitor: "loser 63",
+                    matchid: 63, 
+                    local: "loser 61", 
+                    visitor: "loser 62",
                     stadium: "Doha",
                     date: "2022-12-17T12:00:00Z",
                     stage: "third place"
@@ -788,9 +788,9 @@ let data = {
             name: "Final",
             matches: [
                 {
-                    matchid: 65, 
-                    local: 62, 
-                    visitor: 63,
+                    matchid: 64, 
+                    local: 61, 
+                    visitor: 62,
                     stadium: "Doha",
                     date: "2022-12-17T12:00:00Z",
                     stage: "final"
