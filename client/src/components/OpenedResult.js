@@ -22,7 +22,7 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
                 onChange={ e => setGoalsLocal(e.target.value) }
             />
         </div>
-        <button onClick={handleClick}>Set</button>
+        <button onClick={handleClick} id="set">Set</button>
         <div className='group-stage-group-match-result-container'>
             <input 
                 type="number" 

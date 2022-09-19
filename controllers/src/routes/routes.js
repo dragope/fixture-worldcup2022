@@ -196,9 +196,9 @@ router.post('/api/final-stages/', cors(corsOptions), async (req, res)=>{
     }
 
     //Encuentra el encuentro en la BD de Quarterfinals
-    const prevMatchQF= await Quarterfinals.find({ local: matchid } || { visitor: matchid}).lean()
+    // const prevMatchQF = await Quarterfinals.find({ local: matchid } || { visitor: matchid}).lean()
     //ID que sirve para buscar a ver si hay ya QuarterfinalsPlayed
-    console.log(prevMatchQF[0].matchid)
+    // console.log(prevMatchQF[0].matchid)
 
     //Queda, primero, hacer búsqueda en QFP a ver si ya está el partido y hay que actualizarlo. Si no hay que actualizarlo, hay que guardar uno nuevo
 

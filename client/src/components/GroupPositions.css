@@ -18,11 +18,12 @@
 .group-positions-team{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 350px;
-    margin-bottom: 2.5%;
+    /* margin-bottom: 2.5%; */
     border-bottom: solid 0.25px black;
-    font-size: 12px
+    font-size: 12px;
+    line-height: 60px;
 }
 .group-position-team-stats{
     display: flex;
@@ -32,11 +33,13 @@
 }
 .group-position-team-stats-points{
     font-weight: bold;
+    line-height: 60px;
 }
 .group-positions-team-name {
     font-weight: bold;
     width: 120px;
     text-align: left;
+    margin-left: 2.5%;
 
 }
 .group-positions-team-indicator{
@@ -50,4 +53,12 @@
     width: 240px;
     justify-content: space-around;
     font-weight: bold;
+}
+.group-positions-team:nth-child(2){
+    background-color: rgb(255, 222, 73);
+    color: rgb(191, 0, 0)
+}
+.group-positions-team:nth-child(3) {
+    background-color: rgb(253, 240, 185);
+    color: rgb(143, 32, 32)
 }

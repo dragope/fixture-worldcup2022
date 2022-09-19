@@ -16,7 +16,32 @@
     font-size: 9px;
     font-weight: bold;
 }
-
+.group-stage-group-match-result-container > input {
+    font-weight: bold;
+    font-size: 17px;
+    text-align: center;
+    color: rgb(107, 107, 107);
+    width: 20px;
+    height: 20px;
+    border-bottom: 1.5px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: rgb(200, 200, 200);
+}
+#set{
+    color: red
+}
+.group-stage-group-match-result-container > p {
+    font-weight: bold;
+}
+.group-stage-group-match-results > button {
+    font-weight: bold;
+    font-size: 12px;
+    color:blue;
+    border: none;
+    background-color: transparent;
+}
 .group-stage-group-match-result {
     width: 15px;
     height: 15px;

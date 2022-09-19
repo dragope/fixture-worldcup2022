@@ -1,5 +1,5 @@
 .final-stage-container {
-    background-color: rgb(175, 175, 175);
+    background-color: rgb(59, 28, 211);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -11,9 +11,10 @@
 }
 
 .final-stage-title {
-    font-size: 20px;
+    font-size: 28px;
     width: 100%;
     margin-bottom: 0.5%;
+    color: white
 }
 
 .final-stage-match-container {

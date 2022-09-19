@@ -17,7 +17,7 @@ function GroupPositions({ positions }) {
                     <p>GA</p> 
                     <p>GD</p>
                 </div>
-            </div>
+        </div>
         {positions && positions.map( position => 
             <div className='group-positions-team' id={positions.country}>
                 <p className="group-positions-team-name">{position.country}</p>
