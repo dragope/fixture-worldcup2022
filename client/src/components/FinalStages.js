@@ -13,7 +13,6 @@ function FinalStages() {
 
   return (
     <div className='final-stages'>
-
         {
             data.finalstages.map( stage => <FinalStageContainer key={stage.name} stage={stage} countries={data.countries}/>)
         }

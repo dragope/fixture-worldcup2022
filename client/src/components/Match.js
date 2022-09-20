@@ -101,6 +101,28 @@ function Match({ countries, match, getGroupPositions, round }) {
             .then(res => res.status === 200 && getFinalStages())
             .catch(err => console.error(err))
         }
+        if(match.stage === "semifinals"){
+            fetch('http://localhost:3001/api/set-semifinals/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    matchid: match.matchid,
+                    stage: match.stage,
+                    local: countries[Number(matchContenders[0].local)-1].countryid, 
+                    visitor: countries[Number(matchContenders[0].visitor)-1].countryid,
+                    countryLocal: countries[Number(matchContenders[0].local)-1].name,
+                    countryVisitor: countries[Number(matchContenders[0].visitor)-1].name,
+                    goalsLocal: Number(goalsLocal), 
+                    goalsVisitor: Number(goalsVisitor),
+                    stadium: match.stadium,
+                    date: match.date
+                })
+            })
+            .then(res => res.status === 200 && getFinalStages())
+            .catch(err => console.error(err))
+        }
     }
 
   return (

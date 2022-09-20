@@ -8,6 +8,10 @@ const Quarterfinals = require('../models/Quarterfinals')
 const QuarterfinalsPlayed = require('../models/QuarterfinalsPlayed')
 const Semifinals = require('../models/Semifinals')
 const SemifinalsPlayed = require('../models/SemifinalsPlayed')
+const Final = require('../models/Final')
+const FinalPlayed = require('../models/FinalPlayed')
+const ThirdPlace = require('../models/ThirdPlace')
+const ThirdPlacePlayed = require('../models/ThirdPlacePlayed')
 
 //Obtener todos los partidos jugados para que se carguen cuando se inicia la página
 router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
@@ -373,5 +377,184 @@ router.get('/api/get-semifinals/', cors(corsOptions), async (req, res)=> {
     const semifinals = await SemifinalsPlayed.find().lean()
     res.send(semifinals)
 })
+
+//Setear los resultados de semifinales y definir los cruces de Final y Tercer Puesto
+router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    
+    let result = ""
+    if(goalsLocal > goalsVisitor){
+        result = "local"
+    } else {
+        result = "visitor"
+    }
+
+    const prevMatchF = await Final.find({ $or: [{local: matchid}, {visitor: matchid}] }).lean()
+    if(prevMatchF){
+        await SemifinalsPlayed.findOneAndUpdate({ matchid: matchid }, {
+            stage: stage,
+            matchid: matchid,
+            local: local,
+            visitor: visitor,
+            countryLocal: countryLocal,
+            countryVisitor: countryVisitor,
+            goalsLocal: goalsLocal,
+            goalsVisitor: goalsVisitor,
+            result: result,
+            stadium: stadium,
+            date: date
+        })
+    }
+
+    const prevMatchF_P = await FinalPlayed.find({ $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
+
+    console.log(prevMatchF[0])
+    
+    if(prevMatchF_P[0]){
+        if(matchid === prevMatchF[0].local){
+            await FinalPlayed.findOneAndUpdate({ _id: prevMatchF_P[0]._id }, {
+                stage: prevMatchF_P[0].stage,
+                matchid: prevMatchF_P[0].matchid,
+                local: result === 'local' ? local : visitor,
+                visitor: prevMatchF_P[0].visitor,
+                countryLocal: result === 'local' ? countryLocal : countryVisitor,
+                countryVisitor: prevMatchF_P[0].countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchF_P[0].stadium,
+                date: prevMatchF_P[0].date,
+            })
+        } else if(matchid === prevMatchF[0].visitor){
+            await FinalPlayed.findOneAndUpdate({ _id: prevMatchF_P[0]._id }, {
+                stage: prevMatchF_P[0].stage,
+                matchid: prevMatchF_P[0].matchid,
+                local: prevMatchF_P[0].local,
+                visitor: result === 'local' ? local : visitor,
+                countryLocal: prevMatchF_P[0].countryLocal,
+                countryVisitor: result === 'local' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchF_P[0].stadium,
+                date: prevMatchF_P[0].date,
+            })
+        }
+    } else {
+        if(matchid === prevMatchF[0].local){
+            const newF = new FinalPlayed({
+                stage: prevMatchF[0].stage,
+                matchid: prevMatchF[0].matchid,
+                local: result === 'local' ? local : visitor,
+                visitor: prevMatchF[0].visitor,
+                countryLocal: result === 'local' ? countryLocal : countryVisitor,
+                countryVisitor: prevMatchF[0].visitor.toString(),
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchF[0].stadium,
+                date: prevMatchF[0].date,
+            })
+            await newF.save()
+        } else if(matchid === prevMatchF[0].visitor){
+            const newF = new FinalPlayed({
+                stage: prevMatchF[0].stage,
+                matchid: prevMatchF[0].matchid,
+                local: prevMatchF[0].local,
+                visitor: result === 'local' ? local : visitor,
+                countryLocal: prevMatchF[0].local.toString(),
+                countryVisitor: result === 'local' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchF[0].stadium,
+                date: prevMatchF[0].date,
+            })
+            await newF.save()
+        }
+    }
+
+    const prevMatchT = await ThirdPlace.find({ $or: [{local: `loser ${matchid}`}, {visitor: `loser ${matchid}`}] }).lean()
+
+    const prevMatchT_P = await ThirdPlacePlayed.find({ $or: [{ local: `loser ${matchid}` }, { visitor: `loser ${matchid}` }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
+
+    if(prevMatchT_P[0]){
+        if(`loser ${matchid}` === prevMatchT[0].local){
+            await ThirdPlacePlayed.findOneAndUpdate({ _id: prevMatchT_P[0]._id }, {
+                stage: prevMatchT[0].stage,
+                matchid: prevMatchT[0].matchid,
+                local:  result === 'local' ? visitor : local,
+                visitor: prevMatchT_P[0].visitor,
+                countryLocal: result === 'local' ? countryVisitor : countryLocal,
+                countryVisitor: prevMatchT_P[0].countryVisitor.toString(),
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchT[0].stadium,
+                date: prevMatchT[0].date,
+            })
+        } else if(`loser ${matchid}` === prevMatchT[0].visitor){
+            await ThirdPlacePlayed.findOneAndUpdate({ _id: prevMatchT_P[0]._id }, {
+                stage: prevMatchT[0].stage,
+                matchid: prevMatchT[0].matchid,
+                local: prevMatchT_P[0].local, 
+                visitor: result === 'visitor' ? local : visitor,
+                countryLocal: prevMatchT_P[0].countryLocal.toString(),
+                countryVisitor: result === 'visitor' ? countryLocal : countryVisitor,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchT[0].stadium,
+                date: prevMatchT[0].date,
+            })        
+        }
+    } else {
+        if(`loser ${matchid}` === prevMatchT[0].local){
+             const newT = new ThirdPlacePlayed({
+                stage: prevMatchT[0].stage,
+                matchid: prevMatchT[0].matchid,
+                local:  result === 'local' ? visitor : local,
+                visitor: prevMatchT[0].visitor,
+                countryLocal: result === 'local' ? countryVisitor : countryLocal,
+                countryVisitor: prevMatchT[0].visitor.toString(),
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchT[0].stadium,
+                date: prevMatchT[0].date,
+            })
+            await newT.save()           
+        } else if(`loser ${matchid}` === prevMatchT[0].visitor){
+             const newT = new ThirdPlacePlayed({
+                stage: prevMatchT[0].stage,
+                matchid: prevMatchT[0].matchid,
+                local: prevMatchT[0].local,
+                visitor: result === 'visitor' ? local : visitor,
+                countryLocal: prevMatchT[0].local.toString(),
+                countryVisitor: result === 'local' ? countryVisitor : countryLocal,
+                goalsLocal: 0,
+                goalsVisitor: 0,
+                result: "tie",
+                stadium: prevMatchT[0].stadium,
+                date: prevMatchT[0].date,
+            })
+            await newT.save()  
+        }
+    }
+
+res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}. ${result === "local" ? local : visitor} advanced to the final and ${result === "local" ? visitor : local} to the third place match` })
+})
+
+//Obtener cruce de Tercer Pusto
+router.get('/api/get-thirdplace/', cors(corsOptions), async (req, res)=> {
+    const thirdplace = await ThirdPlacePlayed.find().lean()
+    res.send(thirdplace)
+})
+//Obtener cruce de la final
+router.get('/api/get-final/', cors(corsOptions), async (req, res)=> {
+    const final = await FinalPlayed.find().lean()
+    res.send(final)
+})
+
 
 module.exports = router

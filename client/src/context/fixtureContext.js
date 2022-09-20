@@ -33,6 +33,16 @@ function FixtureContextProvider({ children }){
         .then(res => res.json())
         .then(data => setSemifinals(data))
         .catch(err => console.error(err))
+
+        fetch('/api/get-thirdplace/')
+        .then(res => res.json())
+        .then(data => setThirdPlace(data))
+        .catch(err => console.error(err))
+
+        fetch('/api/get-final/')
+        .then(res => res.json())
+        .then(data => setFinal(data))
+        .catch(err => console.error(err))
     }
 
     return(
