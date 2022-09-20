@@ -21,6 +21,7 @@ router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
     const Matches = GroupMatches.concat(Round16Matches, QuarterfinalsMatches)
     res.send(Matches)
 })
+
 //Actualizar partidos de grupo
 router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     const { group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor } = req.body;
@@ -48,6 +49,7 @@ router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     }
     res.send({message: `Match ${countryLocal} vs. ${countryVisitor} added`, error: "false"})
 })
+
 //Obtener las posiciones del grupo
 router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
     const { group, countries } = req.body
@@ -122,6 +124,7 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
     }
     res.send({groupStats})
 })
+
 //Definir los equipos que clasifican a Octavos de acuerdo a la posición en la tabla de los grupos
 router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
     const { first, second } = req.body;
@@ -176,6 +179,7 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
 
     res.send({ message: `Updated match ${match_1[0].matchid} and  ${match_2[0].matchid}`, updatedRound: newRound16 })
 })
+
 //Actaulizar resultados de partidos de Octavos y a la vez el clasificado al correspondiente partido de Cuartos
 router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
     const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
@@ -271,11 +275,13 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
     }
 res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}`})
 })
+
 //Obtener los cruces de Cuartos de final
 router.get('/api/get-quarterfinals/', cors(corsOptions), async (req, res)=> {
     const quarterfinals = await QuarterfinalsPlayed.find().lean()
     res.send(quarterfinals)
 })
+
 //Definir los resultados de cuartos y escribir los cruces de Semis
 router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
     const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
@@ -550,11 +556,51 @@ router.get('/api/get-thirdplace/', cors(corsOptions), async (req, res)=> {
     const thirdplace = await ThirdPlacePlayed.find().lean()
     res.send(thirdplace)
 })
+
 //Obtener cruce de la final
 router.get('/api/get-final/', cors(corsOptions), async (req, res)=> {
     const final = await FinalPlayed.find().lean()
     res.send(final)
 })
 
+//Setear resultado del Tercer Puesto
+router.post('/api/set-thirdplace', cors(corsOptions), async (req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    
+    let result = ""
+    if(goalsLocal > goalsVisitor){
+        result = "local"
+    } else {
+        result = "visitor"
+    }
+
+    let thirdPlace = await ThirdPlacePlayed.find().lean()
+
+    await ThirdPlacePlayed.findOneAndUpdate( { _id: thirdPlace[0]._id }, {
+        goalsLocal: goalsLocal,
+        goalsVisitor: goalsVisitor,
+        result: result
+    })
+})
+
+//Setear el resultado de la Final
+router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    
+    let result = ""
+    if(goalsLocal > goalsVisitor){
+        result = "local"
+    } else {
+        result = "visitor"
+    }
+
+    let final = await FinalPlayed.find().lean()
+
+    await FinalPlayed.findOneAndUpdate( { _id: final[0]._id }, {
+        goalsLocal: goalsLocal,
+        goalsVisitor: goalsVisitor,
+        result: result
+    })
+})
 
 module.exports = router

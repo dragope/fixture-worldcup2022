@@ -35,25 +35,23 @@ function Match({ countries, match, getGroupPositions, round }) {
     const submitResult = () => {
         setSubmited(true)
         if(match.stage === "group"){
-            fetch('http://localhost:3001/api/group-match/',
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ 
-                        group: match.group, 
-                        matchid: match.matchid,
-                        local: match.local,
-                        visitor: match.visitor,
-                        countryLocal: countries[match.local-1].name,
-                        countryVisitor: countries[match.visitor-1].name,
-                        goalsLocal: goalsLocal,
-                        goalsVisitor: goalsVisitor,
-                    }),
-                    mode: 'cors'
-                }
-            )
+            fetch('http://localhost:3001/api/group-match/', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    group: match.group, 
+                    matchid: match.matchid,
+                    local: match.local,
+                    visitor: match.visitor,
+                    countryLocal: countries[match.local-1].name,
+                    countryVisitor: countries[match.visitor-1].name,
+                    goalsLocal: goalsLocal,
+                    goalsVisitor: goalsVisitor,
+                }),
+                mode: 'cors'
+            })
                 .then(res => res.status === 200 && getGroupPositions())
                 .catch(err => console.error(err))
         }
@@ -123,37 +121,83 @@ function Match({ countries, match, getGroupPositions, round }) {
             .then(res => res.status === 200 && getFinalStages())
             .catch(err => console.error(err))
         }
+        if(match.stage === "third place"){
+            fetch('http://localhost:3001/api/set-thirdplace/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    matchid: match.matchid,
+                    stage: match.stage,
+                    local: countries[Number(matchContenders[0].local)-1].countryid, 
+                    visitor: countries[Number(matchContenders[0].visitor)-1].countryid,
+                    countryLocal: countries[Number(matchContenders[0].local)-1].name,
+                    countryVisitor: countries[Number(matchContenders[0].visitor)-1].name,
+                    goalsLocal: Number(goalsLocal), 
+                    goalsVisitor: Number(goalsVisitor),
+                    stadium: match.stadium,
+                    date: match.date
+                })
+            })
+            .then(res => res.status === 200 && getFinalStages())
+            .catch(err => console.error(err))
+        }
+        if(match.stage === "final"){
+            fetch('http://localhost:3001/api/set-final/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    matchid: match.matchid,
+                    stage: match.stage,
+                    local: countries[Number(matchContenders[0].local)-1].countryid, 
+                    visitor: countries[Number(matchContenders[0].visitor)-1].countryid,
+                    countryLocal: countries[Number(matchContenders[0].local)-1].name,
+                    countryVisitor: countries[Number(matchContenders[0].visitor)-1].name,
+                    goalsLocal: Number(goalsLocal), 
+                    goalsVisitor: Number(goalsVisitor),
+                    stadium: match.stadium,
+                    date: match.date
+                })
+            })
+            .then(res => res.status === 200 && getFinalStages())
+            .catch(err => console.error(err))
+        }
     }
+
+    // console.log(matchContenders)
 
   return (
         <div className="group-stage-group-match">
             <div className='group-stage-group-match-countries'>
                 <div className='group-stage-group-match-team'>
                     {matchContenders[0] ?
-                        <img className="group-stage-group-match-countries-flag" src={matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].flag : GenericFlag} alt="Local Flag" /> 
+                        <img className="group-stage-group-match-countries-flag" src={matchContenders[0].countryLocal.length > 2 ? matchContenders[0].countryLocal.startsWith('loser') ? GenericFlag : countries[Number(matchContenders[0].local)-1].flag : GenericFlag} alt="Local Flag" /> 
                         :
                         countries[match.local-1] ? 
                         <img className="group-stage-group-match-countries-flag" src={countries[match.local-1].flag} alt="Local Flag" /> 
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Local Flag" /> 
                     }
-                    <p><b>{matchContenders[0] ? matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].name : "Qualified " + match.local : countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
+                    <p><b>{matchContenders[0] ? matchContenders[0].countryLocal.startsWith('loser') ? "Qualified " + matchContenders[0].countryVisitor : matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].name : "Qualified " + match.local : countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
                 </div>
                 { savedResult[0] ? 
                     submited ?
                         <SetResult savedResult={savedResult} setSubmited={setSubmited} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} submited={submited} />
                         :
-                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submitResult={submitResult} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} setModal={setModal} submited={submited} />
+                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submitResult={submitResult} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} setModal={setModal} stage={match.stage} />
                     :
                     !submited ?
-                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submitResult={submitResult} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} setModal={setModal} submited={submited}/>
+                        <OpenedResult savedResult={savedResult} setGoalsLocal={setGoalsLocal} setGoalsVisitor={setGoalsVisitor} submitResult={submitResult} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} setModal={setModal} stage={match.stage}/>
                         :
                         <SetResult savedResult={savedResult} setSubmited={setSubmited} goalsLocal={goalsLocal} goalsVisitor={goalsVisitor} submited={submited} />
                 }
                 <div className='group-stage-group-match-team'>
-                    <p><b>{matchContenders[0] ? matchContenders[0].countryVisitor.length > 2 ? countries[Number(matchContenders[0].visitor)-1].name : "Qualified " + match.visitor : countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
+                    <p><b>{matchContenders[0] ? matchContenders[0].countryVisitor.startsWith('loser') ? "Qualified " + matchContenders[0].countryVisitor : matchContenders[0].countryVisitor.length > 2 ? countries[Number(matchContenders[0].visitor)-1].name : "Qualified " + match.visitor : countries[match.visitor-1] ? countries[match.visitor-1].name : "Qualified " + match.visitor}</b></p>
                     {matchContenders[0] ?
-                        <img className="group-stage-group-match-countries-flag" src={matchContenders[0].countryVisitor.length > 2 ? countries[Number(matchContenders[0].visitor)-1].flag : GenericFlag} alt="Local Flag" /> 
+                        <img className="group-stage-group-match-countries-flag" src={matchContenders[0].countryVisitor.length > 2 ? matchContenders[0].countryVisitor.startsWith('loser') ? GenericFlag : countries[Number(matchContenders[0].visitor)-1].flag : GenericFlag} alt="Local Flag" /> 
                         :
                         countries[match.visitor-1] ? 
                         <img className="group-stage-group-match-countries-flag" src={countries[match.visitor-1].flag} alt="Visitor Flag" /> 
