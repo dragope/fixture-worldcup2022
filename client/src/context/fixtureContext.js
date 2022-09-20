@@ -65,8 +65,6 @@ function FixtureContextProvider({ children }){
             modal,
             setModal
         }}>
-
-
             {children}
         </FixtureContext.Provider>
     )

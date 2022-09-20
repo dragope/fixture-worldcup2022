@@ -6,11 +6,18 @@ import { useFixtureContext } from '../context/fixtureContext'
 
 function GroupStage() {
 
-  const { getMatchesPlayed, load } = useFixtureContext()
+  const { getMatchesPlayed, load, getFinalStages } = useFixtureContext()
 
   useEffect(()=>{
     getMatchesPlayed()
   }, [])
+
+  const clearGroupStage = () => {
+    fetch('/api/clear-group-stage', { method: "DELETE" })
+      .then(res => res.status === 200 && getFinalStages())
+      .then(()=> getMatchesPlayed())
+      .catch(err => console.error(err))
+  }
 
   return (
     <>
@@ -22,6 +29,7 @@ function GroupStage() {
           {
               data.groups.map( group => <Group key={group.group} group={group} countries={data.countries}/>)
           }
+          <div className='group-stage-button-container'><button onClick={clearGroupStage}>Clear Group Stage</button></div>
       </div>
     }
 

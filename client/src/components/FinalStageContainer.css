@@ -34,3 +34,23 @@
     color: white;
     border: 1px solid black;
 }
+.final-stage-container-button-container{
+    width: 100%;
+}
+.final-stage-container-button-container > button {
+    width: 150px;
+    height: 30px;
+    margin-top: 1%;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid white;
+    background-color: rgb(206, 126, 126);
+    color: white;
+    cursor: pointer
+
+}
+.final-stage-container-button-container>button:hover{
+    border: 1px solid rgb(206, 126, 126);
+    background-color: white;
+    color: rgb(206, 126, 126)
+}

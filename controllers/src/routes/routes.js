@@ -11,7 +11,8 @@ const SemifinalsPlayed = require('../models/SemifinalsPlayed')
 const Final = require('../models/Final')
 const FinalPlayed = require('../models/FinalPlayed')
 const ThirdPlace = require('../models/ThirdPlace')
-const ThirdPlacePlayed = require('../models/ThirdPlacePlayed')
+const ThirdPlacePlayed = require('../models/ThirdPlacePlayed');
+const { default: mongoose } = require('mongoose');
 
 //Obtener todos los partidos jugados para que se carguen cuando se inicia la página
 router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
@@ -601,6 +602,146 @@ router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
         goalsVisitor: goalsVisitor,
         result: result
     })
+})
+
+//Limpiar fase de grupos
+router.delete('/api/clear-group-stage', cors(corsOptions), async (req, res)=>{
+    await mongoose.connection.db.dropCollection(
+                        "matchplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "round16playeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "quarterfinalsplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "semifinalsplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "thirdplaceplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "finalplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    res.send({ message: `Data cleared` })
+})
+
+//Limpiar Octavos
+router.delete('/api/clear-round16', cors(corsOptions), async(req, res)=>{
+
+    await Round16Played.updateMany({ stage: "round of 16" }, {
+        goalsLocal: 0,
+        goalsVisitor: 0,
+        result: "tie"
+    })
+
+    await mongoose.connection.db.dropCollection(
+                        "quarterfinalsplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "semifinalsplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "thirdplaceplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "finalplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    res.send({ message: `Data cleared` })
+})
+
+//Limpiar Cuartos
+router.delete('/api/clear-quarterfinals', cors(corsOptions), async(req, res)=>{
+
+    await QuarterfinalsPlayed.updateMany({ stage: "quarterfinals" }, {
+        goalsLocal: 0,
+        goalsVisitor: 0,
+        result: "tie"
+    })
+
+    await mongoose.connection.db.dropCollection(
+                        "semifinalsplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "thirdplaceplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "finalplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    res.send({ message: `Data cleared` })
+})
+
+//Limpiar Semifinales
+router.delete('/api/clear-semifinals', cors(corsOptions), async(req, res)=>{
+
+    await SemifinalsPlayed.updateMany({ stage: "semifinals" }, {
+        goalsLocal: 0,
+        goalsVisitor: 0,
+        result: "tie"
+    })
+
+    await mongoose.connection.db.dropCollection(
+                        "thirdplaceplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    await mongoose.connection.db.dropCollection(
+                        "finalplayeds",
+                        function(err, result) {
+                            console.log("Collection droped");
+                        })
+    res.send({ message: `Data cleared` })
+})
+
+//Limpiar Tercer Puesto
+router.delete('/api/clear-third-place', cors(corsOptions), async(req, res)=>{
+
+    await ThirdPlacePlayed.updateMany({ stage: "third place" }, {
+        goalsLocal: 0,
+        goalsVisitor: 0,
+        result: "tie"
+    })
+
+    res.send({ message: `Data cleared` })
+})
+
+// Limpiar Final
+router.delete('/api/clear-final', cors(corsOptions), async(req, res)=>{
+
+    await FinalPlayed.updateMany({ stage: "final" }, {
+        goalsLocal: 0,
+        goalsVisitor: 0,
+        result: "tie"
+    })
+
+    res.send({ message: `Data cleared` })
 })
 
 module.exports = router
