@@ -4,6 +4,7 @@ import GroupStage from './components/GroupStage';
 import FinalStages from './components/FinalStages';
 import FixtureContextProvider from './context/fixtureContext';
 import Modal from './components/Modal';
+import Menu from './components/Menu';
 import Authentication from './components/Authentication';
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase/firebaseConfig';
@@ -25,9 +26,10 @@ function App() {
       <FixtureContextProvider>
         {user ?
         <>
-          <Modal user={user}/>
-          <GroupStage user={user} setUser={setUser}/>
-          <FinalStages user={user}/>
+          <Menu user ={user} setUser={setUser} />
+          <Modal user={user} />
+          <GroupStage user={user} />
+          <FinalStages user={user} />
         </>
         :
         <Authentication />

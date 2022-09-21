@@ -1,0 +1,42 @@
+.menu-container{
+    position: fixed;
+    margin-top: -100px;
+    height: 100px;
+    width: 100vw;
+    background-color: rgb(80, 75, 240);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-left: 5%;
+    padding-right: 5%
+}
+.menu-container-user{
+    width: 340px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+.menu-container > h1 {
+    color: white
+}
+.menu-container-user{
+    color: white
+}
+.menu-container-logout-button{
+    width: 150px;
+    height: 30px;
+    margin-top: 1%;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid white;
+    background-color: rgb(206, 126, 126);
+    color: white;
+    cursor: pointer
+}
+.menu-container-logout-button:hover{
+    border: 1px solid rgb(206, 126, 126);
+    background-color: white;
+    color: rgb(206, 126, 126)
+}

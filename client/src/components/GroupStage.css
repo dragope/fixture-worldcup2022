@@ -1,3 +1,6 @@
+.group-stage-container{
+    margin-top: 100px;
+}
 .group-stage{
     background-color: rgb(59, 28, 211);
     display: flex;
