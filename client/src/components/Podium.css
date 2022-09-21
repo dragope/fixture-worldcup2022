@@ -1,0 +1,50 @@
+.podium-container{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 1.5%;
+}
+.podium-container-champion{
+    width: 100%;
+}
+.podium-container-second{
+    width: 50vw;
+}
+.podium-container-third{
+    width: 50vw;
+}
+.podium-container-team{
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+
+}
+.podium-container-team > img{
+    width: 40px;
+    height: 40px;
+}
+.podium-medal{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+#champion{
+    background-color: rgb(179, 179, 41);
+}
+#silver{
+    background-color: rgb(193, 193, 193);
+}
+#bronze{
+    background-color: rgb(124, 96, 44);
+}

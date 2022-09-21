@@ -3,9 +3,9 @@ import FinalStageContainer from './FinalStageContainer'
 import data from '../data/data'
 import { useFixtureContext } from '../context/fixtureContext'
 
-function FinalStages() {
+function FinalStages({ user }) {
 
-  const { getFinalStages } = useFixtureContext()
+  const { getFinalStages, loadFinalStages } = useFixtureContext()
 
   useEffect(()=>{
       getFinalStages()
@@ -13,8 +13,10 @@ function FinalStages() {
 
   return (
     <div className='final-stages'>
-        {
-            data.finalstages.map( stage => <FinalStageContainer key={stage.name} stage={stage} countries={data.countries}/>)
+        {loadFinalStages ?
+            <h1 className='group-stage-title'>Loading...</h1>
+            :
+            data.finalstages.map( stage => <FinalStageContainer key={stage.name} stage={stage} countries={data.countries} user={user} />)
         }
     </div>
   )

@@ -5,7 +5,7 @@ import { useFixtureContext } from '../context/fixtureContext'
 import OpenedResult from './OpenedResult'
 import SetResult from './SetResult'
 
-function Match({ countries, match, getGroupPositions, round }) {
+function Match({ countries, match, getGroupPositions, round, user }) {
 
     const { matchesPlayed, setModal, getFinalStages } = useFixtureContext()
     const [ submited, setSubmited ] = useState(false)    
@@ -31,6 +31,7 @@ function Match({ countries, match, getGroupPositions, round }) {
             setMatchContenders(contenders)
         }
     }, [matchesPlayed, round])
+
 
     const submitResult = () => {
         setSubmited(true)
@@ -166,8 +167,6 @@ function Match({ countries, match, getGroupPositions, round }) {
             .catch(err => console.error(err))
         }
     }
-
-    // console.log(matchContenders)
 
   return (
         <div className="group-stage-group-match">

@@ -6,7 +6,7 @@ import { useFixtureContext } from '../context/fixtureContext'
 
 function GroupStage() {
 
-  const { getMatchesPlayed, load, getFinalStages } = useFixtureContext()
+  const { getMatchesPlayed, loadGroupStage, getFinalStages } = useFixtureContext()
 
   useEffect(()=>{
     getMatchesPlayed()
@@ -21,7 +21,7 @@ function GroupStage() {
 
   return (
     <div className="group-stage-container">
-    { load ?
+    { loadGroupStage ?
       <h1 className='group-stage-title'>Loading...</h1>
       :
       <div className='group-stage'>

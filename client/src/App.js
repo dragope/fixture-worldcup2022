@@ -8,6 +8,7 @@ import Menu from './components/Menu';
 import Authentication from './components/Authentication';
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase/firebaseConfig';
+import Podium from './components/Podium';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
           <Modal user={user} />
           <GroupStage user={user} />
           <FinalStages user={user} />
+          <Podium />
         </>
         :
         <Authentication />

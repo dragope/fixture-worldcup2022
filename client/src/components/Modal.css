@@ -9,7 +9,6 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.383);
 }
-
 .modal {
     width: 500px;
     height: 300px;
@@ -23,7 +22,6 @@
     flex-direction: column;
     padding: 10px;
 }
-
 .modal>button {
     width: 70px;
     height: 30px;
@@ -34,13 +32,11 @@
     border: none;
     cursor: pointer;
 }
-
 .modal>button:hover {
     background-color: white;
     color: rgb(68, 72, 106);
     border: .5px solid slategrey;
 }
-
 .modal-content {
     background-color: rgb(255, 252, 248);
     border: .5px solid rgb(234, 225, 207);
@@ -54,7 +50,6 @@
     justify-content: space-around;
     align-items: center;
 }
-
 .modal-content>p {
     font-size: 15px;
     font-weight: 400;

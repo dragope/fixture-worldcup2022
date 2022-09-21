@@ -7,51 +7,80 @@ export const useFixtureContext = () => useContext(FixtureContext);
 function FixtureContextProvider({ children }){
 
     const [ matchesPlayed, setMatchesPlayed ] = useState([])
-    const [ load, setLoad ] = useState(true)
+    const [ loadGroupStage, setLoadGroupStage ] = useState(true)
+    const [ loadFinalStages, setLoadFinalStages ] = useState(true)
     const [ round16, setRound16 ] = useState([])
     const [ quarterfinals, setQuarterfinals ] = useState([])
     const [ semifinals, setSemifinals ] = useState([])
     const [ thirdPlace, setThirdPlace ] = useState([])
     const [ final, setFinal ] = useState([])
+    const [ podium, setPodium ] = useState([])
     const [ modal, setModal ] = useState(false)
 
     const getMatchesPlayed = () => {
         fetch(`http://localhost:3001/api/get-matches-played/`)
-            .then(res => res.json())
-            .then(data => setMatchesPlayed(data))
-            .then(setLoad(false))
-            .catch(err => console.error(err))
+        .then(res =>  res.status === 200 && res.json())
+        .then(data => setMatchesPlayed(data))
+        .then(setLoadGroupStage(false))
+        .catch(err => console.error(err))
     }
 
     const getFinalStages = () => {
-        fetch('/api/get-quarterfinals')
+        // fetch('/api/get-quarterfinals')
+        // .then(res => res.json())
+        // .then(data => setQuarterfinals(data))
+        // .then(setLoadFinalStages(false))
+        // .catch(err => console.error(err))
+
+        // fetch('/api/get-semifinals')
+        // .then(res => res.json())
+        // .then(data => setSemifinals(data))
+        // .then(setLoadFinalStages(false))
+        // .catch(err => console.error(err))
+
+        // fetch('/api/get-thirdplace/')
+        // .then(res => res.json())
+        // .then(data => setThirdPlace(data))
+        // .then(setLoadFinalStages(false))
+        // .catch(err => console.error(err))
+
+        // fetch('/api/get-final/')
+        // .then(res => res.json())
+        // .then(data => setFinal(data))
+        // .then(setLoadFinalStages(false))
+        // .catch(err => console.error(err))
+
+        fetch('/api/get-finalstages')
         .then(res => res.json())
-        .then(data => setQuarterfinals(data))
+        .then((data) => {
+            setQuarterfinals(data.quarterfinals)
+            setSemifinals(data.semifinals)
+            setThirdPlace(data.thirdPlace)
+            setFinal(data.final)
+        })
+        .then(setLoadFinalStages(false))
         .catch(err => console.error(err))
 
-        fetch('/api/get-semifinals')
-        .then(res => res.json())
-        .then(data => setSemifinals(data))
-        .catch(err => console.error(err))
+    }
 
-        fetch('/api/get-thirdplace/')
+   const getPodium = () => {
+        fetch('/api/get-podium/')
         .then(res => res.json())
-        .then(data => setThirdPlace(data))
-        .catch(err => console.error(err))
-
-        fetch('/api/get-final/')
-        .then(res => res.json())
-        .then(data => setFinal(data))
-        .catch(err => console.error(err))
+        .then(data => setPodium(data))
     }
 
     return(
         <FixtureContext.Provider value={{
             getMatchesPlayed,
             getFinalStages,
+            getPodium,
             matchesPlayed,
-            load,
-            setLoad,
+            podium,
+            setPodium,
+            loadGroupStage,
+            setLoadGroupStage,
+            loadFinalStages, 
+            setLoadFinalStages, 
             round16,
             setRound16,
             quarterfinals,
