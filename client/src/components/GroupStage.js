@@ -3,8 +3,10 @@ import './GroupStage.css'
 import Group from './Group'
 import data from '../data/data'
 import { useFixtureContext } from '../context/fixtureContext'
+import { signOut } from 'firebase/auth'
+import { auth } from '../firebase/firebaseConfig'
 
-function GroupStage() {
+function GroupStage({ setUser }) {
 
   const { getMatchesPlayed, load, getFinalStages } = useFixtureContext()
 
@@ -19,12 +21,19 @@ function GroupStage() {
       .catch(err => console.error(err))
   }
 
+   const handleSignOut = () => {
+        signOut(auth)
+        .then(()=> setUser(null))
+        .catch(err => console.log(err))
+    }
+
   return (
     <>
     { load ?
       <h1 className='group-stage-title'>Loading...</h1>
       :
       <div className='group-stage'>
+       <button className='authentication-state-button' onClick={()=> handleSignOut()}>Sign Out</button>
         <h1 className='group-stage-title'>Group Stage</h1>
           {
               data.groups.map( group => <Group key={group.group} group={group} countries={data.countries}/>)
