@@ -5,9 +5,9 @@ import { useFixtureContext } from '../context/fixtureContext'
 import OpenedResult from './OpenedResult'
 import SetResult from './SetResult'
 
-function Match({ countries, match, getGroupPositions, round, user }) {
+function Match({ countries, match, getGroupPositions, round }) {
 
-    const { matchesPlayed, setModal, getFinalStages } = useFixtureContext()
+    const { matchesPlayed, setModal, getFinalStages, user } = useFixtureContext()
     const [ submited, setSubmited ] = useState(false)    
     const [ goalsLocal, setGoalsLocal ] = useState(0)
     const [ goalsVisitor, setGoalsVisitor ] = useState(0)
@@ -32,7 +32,6 @@ function Match({ countries, match, getGroupPositions, round, user }) {
         }
     }, [matchesPlayed, round])
 
-
     const submitResult = () => {
         setSubmited(true)
         if(match.stage === "group"){
@@ -41,7 +40,8 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
+                    user: user.uid,
                     group: match.group, 
                     matchid: match.matchid,
                     local: match.local,
@@ -63,6 +63,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    user: user.uid,
                     matchid: match.matchid,
                     stage: match.stage,
                     local: countries[Number(matchContenders[0].local)-1].countryid, 
@@ -85,6 +86,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    user: user.uid,
                     matchid: match.matchid,
                     stage: match.stage,
                     local: countries[Number(matchContenders[0].local)-1].countryid, 
@@ -107,6 +109,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    user: user.uid,
                     matchid: match.matchid,
                     stage: match.stage,
                     local: countries[Number(matchContenders[0].local)-1].countryid, 
@@ -129,6 +132,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    user: user.uid,
                     matchid: match.matchid,
                     stage: match.stage,
                     local: countries[Number(matchContenders[0].local)-1].countryid, 
@@ -151,6 +155,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    user: user.uid,
                     matchid: match.matchid,
                     stage: match.stage,
                     local: countries[Number(matchContenders[0].local)-1].countryid, 
@@ -180,7 +185,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                         : 
                         <img className="group-stage-group-match-countries-flag" src={GenericFlag} alt="Local Flag" /> 
                     }
-                    <p><b>{matchContenders[0] ? matchContenders[0].countryLocal.startsWith('loser') ? "Qualified " + matchContenders[0].countryVisitor : matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].name : "Qualified " + match.local : countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
+                    <p><b>{matchContenders[0] ? matchContenders[0].countryLocal.startsWith('loser') ? "Qualified " + matchContenders[0].countryLocal : matchContenders[0].countryLocal.length > 2 ? countries[Number(matchContenders[0].local)-1].name : "Qualified " + match.local : countries[match.local-1] ? countries[match.local-1].name : "Qualified " + match.local}</b></p>
                 </div>
                 { savedResult[0] ? 
                     submited ?

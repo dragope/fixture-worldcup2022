@@ -15,17 +15,18 @@ const ThirdPlacePlayed = require('../models/ThirdPlacePlayed');
 const { default: mongoose } = require('mongoose');
 
 //Obtener todos los partidos jugados para que se carguen cuando se inicia la página
-router.get('/api/get-matches-played/', cors(corsOptions), async(req, res)=>{
-    const GroupMatches = await MatchPlayed.find().lean()
-    const Round16Matches = await Round16Played.find().lean()
-    const QuarterfinalsMatches = await QuarterfinalsPlayed.find().lean()
+router.get('/api/get-matches-played/:user', cors(corsOptions), async(req, res)=>{
+    const user = req.params.user
+    const GroupMatches = await MatchPlayed.find({ user: user }).lean()
+    const Round16Matches = await Round16Played.find({ user: user }).lean()
+    const QuarterfinalsMatches = await QuarterfinalsPlayed.find({ user: user }).lean()
     const Matches = GroupMatches.concat(Round16Matches, QuarterfinalsMatches)
     res.send(Matches)
 })
 
 //Actualizar partidos de grupo
 router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
-    const { group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor } = req.body;
+    const { group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, user } = req.body;
     let result = ""
     let pointsLocal = 0
     let pointsVisitor = 0
@@ -40,21 +41,23 @@ router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
         result = "visitor"
         pointsVisitor = 3
     }
-    const newMatch = new MatchPlayed({ group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, result, pointsLocal: pointsLocal, pointsVisitor: pointsVisitor })
-    const prevMatch = await MatchPlayed.find({ matchid: matchid })
+    const newMatch = new MatchPlayed({ user, group, matchid, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, result, pointsLocal: pointsLocal, pointsVisitor: pointsVisitor })
+    const prevMatch = await MatchPlayed.find({ matchid: matchid, user: user })
     if(prevMatch.length > 0){
-        await MatchPlayed.findOneAndUpdate({ matchid: matchid }, { goalsLocal: goalsLocal, goalsVisitor: goalsVisitor, result: result, pointsLocal: pointsLocal, pointsVisitor: pointsVisitor })
+        await MatchPlayed.findOneAndUpdate({ matchid: matchid, user: user }, { goalsLocal: goalsLocal, goalsVisitor: goalsVisitor, result: result, pointsLocal: pointsLocal, pointsVisitor: pointsVisitor })
         console.log('Modified Match')
     } else {
+        console.log(newMatch)
         await newMatch.save()
     }
     res.send({message: `Match ${countryLocal} vs. ${countryVisitor} added`, error: "false"})
 })
 
 //Obtener las posiciones del grupo
-router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
+router.post('/api/get-group/:user', cors(corsOptions), async (req, res)=>{
     const { group, countries } = req.body
-    const groupMatches = await MatchPlayed.find({ group: group }).lean();
+    const user = req.params.user
+    const groupMatches = await MatchPlayed.find({$and:[{ group: group }, { user: user }] }).lean();
     const groupStats = []
     for (let i = 0; i < countries.length; i++){
         groupStats.push({country: countries[i], countryid: 0, played: 0, points: 0 ,won: 0, tied: 0, lost: 0, gf: 0, ga: 0})
@@ -127,19 +130,21 @@ router.post('/api/get-group/', cors(corsOptions), async (req, res)=>{
 })
 
 //Definir los equipos que clasifican a Octavos de acuerdo a la posición en la tabla de los grupos
-router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
+router.post('/api/set-round16/:user', cors(corsOptions), async (req, res)=>{
     const { first, second } = req.body;
+    const user = req.params.user
     const match_1 = await Round16.find({ local: first.qualified })
     const match_2 = await Round16.find({ visitor: second.qualified })
-    const match_1_played = await Round16Played.find({ matchid: match_1[0].matchid })
-    const match_2_played = await Round16Played.find({ matchid: match_2[0].matchid })
+    const match_1_played = await Round16Played.find({ $and:[{ matchid: match_1[0].matchid }, { user: user }] })
+    const match_2_played = await Round16Played.find({ $and:[{ matchid: match_2[0].matchid }, { user: user }] })
 
     if(first.countryid !== 0 && second.countryid !== 0){
         // First
         if(match_1_played[0]){
-            await Round16Played.findOneAndUpdate({ matchid: match_1[0].matchid }, { local: first.countryid, countryLocal: first.country })
+            await Round16Played.findOneAndUpdate({ $and:[{ matchid: match_1[0].matchid }, { user: user }] }, { local: first.countryid, countryLocal: first.country })
         } else{
             const newRound16_1 = new Round16Played({ 
+                user: user,
                 stage: "round of 16",
                 matchid: match_1[0].matchid,
                 local: first.countryid.toString(), 
@@ -157,9 +162,10 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
         }
         //Second
         if(match_2_played[0]){
-            await Round16Played.findOneAndUpdate({ matchid: match_2[0].matchid }, { visitor: second.countryid, countryVisitor: second.country })
+            await Round16Played.findOneAndUpdate({ $and:[{ matchid: match_2[0].matchid }, { user: user }] }, { visitor: second.countryid, countryVisitor: second.country })
         } else{
-            const newRound16_2 = new Round16Played({ 
+            const newRound16_2 = new Round16Played({
+                user: user, 
                 stage: "round of 16",
                 matchid: match_2[0].matchid, 
                 local: match_2[0].local, 
@@ -176,15 +182,15 @@ router.post('/api/set-round16/', cors(corsOptions), async (req, res)=>{
         }
     }
 
-    const newRound16 = await Round16Played.find().lean()
+    const newRound16 = await Round16Played.find({ user: user }).lean()
 
     res.send({ message: `Updated match ${match_1[0].matchid} and  ${match_2[0].matchid}`, updatedRound: newRound16 })
 })
 
 //Actaulizar resultados de partidos de Octavos y a la vez el clasificado al correspondiente partido de Cuartos
-router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
-    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
-    const prevMatch = await Round16Played.find({ matchid: matchid }).lean()
+router.post(`/api/round-16/`, cors(corsOptions), async (req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
+    const prevMatch = await Round16Played.find({$and:[{ user: user }, { matchid: matchid }]}).lean()
     let result = ""
     if(goalsLocal > goalsVisitor){
         result = "local"
@@ -192,9 +198,10 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
         result = "visitor"
     }
     if(prevMatch){
-        await Round16Played.findOneAndUpdate({ matchid: matchid }, { goalsLocal: goalsLocal, goalsVisitor: goalsVisitor, result: result})
+        await Round16Played.findOneAndUpdate( {$and:[{ matchid: matchid }, { user: user }]}, { goalsLocal: goalsLocal, goalsVisitor: goalsVisitor, result: result})
     } else {
         const newMatch = new Round16Played({
+            user: user,
             stage: stage,
             matchid: matchid,
             local: local,
@@ -210,10 +217,11 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
         await newMatch.save()
     }
     const prevMatchQF = await Quarterfinals.find({ $or: [{ local: matchid }, { visitor: matchid }]}).lean()
-    const prevMatchQF_P = await QuarterfinalsPlayed.find({ $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
+    const prevMatchQF_P = await QuarterfinalsPlayed.find({ $and: [{ user: user }], $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
     if(prevMatchQF_P[0]){
         if(matchid === prevMatchQF[0].local){
             await QuarterfinalsPlayed.findOneAndUpdate({ _id: prevMatchQF_P[0]._id }, {
+                user: user,
                 stage: prevMatchQF_P[0].stage,
                 matchid: prevMatchQF_P[0].matchid,
                 local: result === 'local' ? local : visitor,
@@ -228,6 +236,7 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
             })
         } else if(matchid == prevMatchQF[0].visitor){
             await QuarterfinalsPlayed.findOneAndUpdate({ _id: prevMatchQF_P[0]._id }, {
+                user: user,
                 stage: prevMatchQF_P[0].stage,
                 matchid: prevMatchQF_P[0].matchid,
                 local: prevMatchQF_P[0].local,
@@ -244,6 +253,7 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
     } else {
         if(matchid === prevMatchQF[0].local){
             const newQF = new QuarterfinalsPlayed({
+                user: user,
                 stage: prevMatchQF[0].stage,
                 matchid: prevMatchQF[0].matchid,
                 local: result === 'local' ? local : visitor,
@@ -259,6 +269,7 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
             await newQF.save()
         } else if(matchid === prevMatchQF[0].visitor){
             const newQF = new QuarterfinalsPlayed({
+                user: user,
                 stage: prevMatchQF[0].stage,
                 matchid: prevMatchQF[0].matchid,
                 local: prevMatchQF[0].local,
@@ -277,16 +288,9 @@ router.post('/api/round-16/', cors(corsOptions), async (req, res)=>{
 res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}`})
 })
 
-//Obtener los cruces de Cuartos de final
-router.get('/api/get-quarterfinals/', cors(corsOptions), async (req, res)=> {
-    const quarterfinals = await QuarterfinalsPlayed.find().lean()
-    res.send(quarterfinals)
-})
-
 //Definir los resultados de cuartos y escribir los cruces de Semis
 router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
-    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
-    // console.log(req.body)
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
     let result = ""
     if(goalsLocal > goalsVisitor){
         result = "local"
@@ -310,12 +314,13 @@ router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
         })
     }
 
-    const prevMatchSF_P = await SemifinalsPlayed.find({ $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
+    const prevMatchSF_P = await SemifinalsPlayed.find({$and:[ { user: user }, { $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}]}).lean()
     
 
     if(prevMatchSF_P[0]){
         if(matchid === prevMatchSF[0].local){
             await SemifinalsPlayed.findOneAndUpdate({ _id: prevMatchSF_P[0]._id }, {
+                user: user,
                 stage: prevMatchSF_P[0].stage,
                 matchid: prevMatchSF_P[0].matchid,
                 local: result === 'local' ? local : visitor,
@@ -330,6 +335,7 @@ router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
             })
         } else if(matchid == prevMatchSF[0].visitor){
             await SemifinalsPlayed.findOneAndUpdate({ _id: prevMatchSF_P[0]._id }, {
+                user: user,
                 stage: prevMatchSF_P[0].stage,
                 matchid: prevMatchSF_P[0].matchid,
                 local: prevMatchSF_P[0].local,
@@ -346,6 +352,7 @@ router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
     } else {
         if(matchid === prevMatchSF[0].local){
             const newSF = new SemifinalsPlayed({
+                user: user,
                 stage: prevMatchSF[0].stage,
                 matchid: prevMatchSF[0].matchid,
                 local: result === 'local' ? local : visitor,
@@ -361,6 +368,7 @@ router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
             await newSF.save()
         } else if(matchid === prevMatchSF[0].visitor){
             const newSF = new SemifinalsPlayed({
+                user: user,
                 stage: prevMatchSF[0].stage,
                 matchid: prevMatchSF[0].matchid,
                 local: prevMatchSF[0].local,
@@ -379,15 +387,21 @@ router.post('/api/set-quarterfinals/', cors(corsOptions), async(req, res)=>{
 res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}`})
 })
 
+//Obtener los cruces de Cuartos de final
+router.get('/api/get-quarterfinals/', cors(corsOptions), async (req, res)=> {
+    const quarterfinals = await QuarterfinalsPlayed.find({ user: user }).lean()
+    res.send(quarterfinals)
+})
+
 //Obtener los cruces de semifinales
 router.get('/api/get-semifinals/', cors(corsOptions), async (req, res)=> {
-    const semifinals = await SemifinalsPlayed.find().lean()
+    const semifinals = await SemifinalsPlayed.find({ user: user }).lean()
     res.send(semifinals)
 })
 
 //Setear los resultados de semifinales y definir los cruces de Final y Tercer Puesto
 router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
-    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
     
     let result = ""
     if(goalsLocal > goalsVisitor){
@@ -398,7 +412,8 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
 
     const prevMatchF = await Final.find({ $or: [{local: matchid}, {visitor: matchid}] }).lean()
     if(prevMatchF){
-        await SemifinalsPlayed.findOneAndUpdate({ matchid: matchid }, {
+        await SemifinalsPlayed.findOneAndUpdate({$and:[{ matchid: matchid }, { user: user }]}, {
+            user: user,
             stage: stage,
             matchid: matchid,
             local: local,
@@ -413,13 +428,12 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
         })
     }
 
-    const prevMatchF_P = await FinalPlayed.find({ $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
-
-    console.log(prevMatchF[0])
+    const prevMatchF_P = await FinalPlayed.find({$and:[ { user: user }, { $or: [{ local: matchid }, { visitor: matchid }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}]}).lean()
     
     if(prevMatchF_P[0]){
         if(matchid === prevMatchF[0].local){
             await FinalPlayed.findOneAndUpdate({ _id: prevMatchF_P[0]._id }, {
+                user: user,
                 stage: prevMatchF_P[0].stage,
                 matchid: prevMatchF_P[0].matchid,
                 local: result === 'local' ? local : visitor,
@@ -434,6 +448,7 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
             })
         } else if(matchid === prevMatchF[0].visitor){
             await FinalPlayed.findOneAndUpdate({ _id: prevMatchF_P[0]._id }, {
+                user: user,
                 stage: prevMatchF_P[0].stage,
                 matchid: prevMatchF_P[0].matchid,
                 local: prevMatchF_P[0].local,
@@ -450,6 +465,7 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
     } else {
         if(matchid === prevMatchF[0].local){
             const newF = new FinalPlayed({
+                user: user,
                 stage: prevMatchF[0].stage,
                 matchid: prevMatchF[0].matchid,
                 local: result === 'local' ? local : visitor,
@@ -465,6 +481,7 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
             await newF.save()
         } else if(matchid === prevMatchF[0].visitor){
             const newF = new FinalPlayed({
+                user: user,
                 stage: prevMatchF[0].stage,
                 matchid: prevMatchF[0].matchid,
                 local: prevMatchF[0].local,
@@ -483,11 +500,13 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
 
     const prevMatchT = await ThirdPlace.find({ $or: [{local: `loser ${matchid}`}, {visitor: `loser ${matchid}`}] }).lean()
 
-    const prevMatchT_P = await ThirdPlacePlayed.find({ $or: [{ local: `loser ${matchid}` }, { visitor: `loser ${matchid}` }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor } ]}).lean()
+    const prevMatchT_P = await ThirdPlacePlayed.find({$and:[ { user: user }, { $or: [{ local: `loser ${matchid}` }, { visitor: `loser ${matchid}` }, { countryLocal: countryLocal }, { countryVisitor: countryVisitor }, { countryVisitor: countryLocal }, { countryLocal: countryVisitor }] } ]}).lean()
 
     if(prevMatchT_P[0]){
         if(`loser ${matchid}` === prevMatchT[0].local){
+            console.log('1')
             await ThirdPlacePlayed.findOneAndUpdate({ _id: prevMatchT_P[0]._id }, {
+                user: user,
                 stage: prevMatchT[0].stage,
                 matchid: prevMatchT[0].matchid,
                 local:  result === 'local' ? visitor : local,
@@ -501,7 +520,9 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
                 date: prevMatchT[0].date,
             })
         } else if(`loser ${matchid}` === prevMatchT[0].visitor){
+            console.log('2')
             await ThirdPlacePlayed.findOneAndUpdate({ _id: prevMatchT_P[0]._id }, {
+                user: user,
                 stage: prevMatchT[0].stage,
                 matchid: prevMatchT[0].matchid,
                 local: prevMatchT_P[0].local, 
@@ -517,7 +538,9 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
         }
     } else {
         if(`loser ${matchid}` === prevMatchT[0].local){
+            console.log('3')
              const newT = new ThirdPlacePlayed({
+                user: user,
                 stage: prevMatchT[0].stage,
                 matchid: prevMatchT[0].matchid,
                 local:  result === 'local' ? visitor : local,
@@ -532,7 +555,9 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
             })
             await newT.save()           
         } else if(`loser ${matchid}` === prevMatchT[0].visitor){
+            console.log('4')
              const newT = new ThirdPlacePlayed({
+                user: user,
                 stage: prevMatchT[0].stage,
                 matchid: prevMatchT[0].matchid,
                 local: prevMatchT[0].local,
@@ -554,13 +579,13 @@ res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs 
 
 //Obtener cruce de Tercer Pusto
 router.get('/api/get-thirdplace/', cors(corsOptions), async (req, res)=> {
-    const thirdplace = await ThirdPlacePlayed.find().lean()
+    const thirdplace = await ThirdPlacePlayed.find({ user: user }).lean()
     res.send(thirdplace)
 })
 
 //Obtener cruce de la final
 router.get('/api/get-final/', cors(corsOptions), async (req, res)=> {
-    const final = await FinalPlayed.find().lean()
+    const final = await FinalPlayed.find({ user: user }).lean()
     res.send(final)
 })
 
@@ -607,7 +632,9 @@ router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
 })
 
 //Limpiar fase de grupos
-router.delete('/api/clear-group-stage', cors(corsOptions), async (req, res)=>{
+router.delete('/api/clear-group-stage/:user', cors(corsOptions), async (req, res)=>{
+    const user = req.params.user
+
     mongoose.connection.db.dropCollection(
                         "matchplayeds",
                         function(err, result) {
@@ -642,9 +669,10 @@ router.delete('/api/clear-group-stage', cors(corsOptions), async (req, res)=>{
 })
 
 //Limpiar Octavos
-router.delete('/api/clear-round16', cors(corsOptions), async(req, res)=>{
+router.delete('/api/clear-round16/:user', cors(corsOptions), async(req, res)=>{
+    const user = req.params.user
 
-    await Round16Played.updateMany({ stage: "round of 16" }, {
+    await Round16Played.updateMany({ $and: [ { stage: "round of 16" }, { user: user } ] }, {
         goalsLocal: 0,
         goalsVisitor: 0,
         result: "tie"
@@ -674,9 +702,10 @@ router.delete('/api/clear-round16', cors(corsOptions), async(req, res)=>{
 })
 
 //Limpiar Cuartos
-router.delete('/api/clear-quarterfinals', cors(corsOptions), async(req, res)=>{
+router.delete('/api/clear-quarterfinals/:user', cors(corsOptions), async(req, res)=>{
+    const user = req.params.user
 
-    await QuarterfinalsPlayed.updateMany({ stage: "quarterfinals" }, {
+    await QuarterfinalsPlayed.updateMany({ $and: [ { stage: "quarterfinals" }, { user: user } ] }, {
         goalsLocal: 0,
         goalsVisitor: 0,
         result: "tie"
@@ -701,9 +730,10 @@ router.delete('/api/clear-quarterfinals', cors(corsOptions), async(req, res)=>{
 })
 
 //Limpiar Semifinales
-router.delete('/api/clear-semifinals', cors(corsOptions), async(req, res)=>{
+router.delete('/api/clear-semifinals/:user', cors(corsOptions), async(req, res)=>{
+    const user = req.params.user
 
-    await SemifinalsPlayed.updateMany({ stage: "semifinals" }, {
+    await SemifinalsPlayed.updateMany({ $and: [ { stage: "semifinals" }, { user: user } ] }, {
         goalsLocal: 0,
         goalsVisitor: 0,
         result: "tie"
@@ -723,7 +753,8 @@ router.delete('/api/clear-semifinals', cors(corsOptions), async(req, res)=>{
 })
 
 //Limpiar Tercer Puesto
-router.delete('/api/clear-third-place', cors(corsOptions), async(req, res)=>{
+router.delete('/api/clear-third-place/:user', cors(corsOptions), async(req, res)=>{
+    const user = req.params.user
 
     await ThirdPlacePlayed.updateMany({ stage: "third place" }, {
         goalsLocal: 0,
@@ -737,9 +768,10 @@ router.delete('/api/clear-third-place', cors(corsOptions), async(req, res)=>{
 })
 
 // Limpiar Final
-router.delete('/api/clear-final', cors(corsOptions), async(req, res)=>{
+router.delete('/api/clear-final/:user', cors(corsOptions), async(req, res)=>{
+    const user = req.params.user
 
-    await FinalPlayed.updateMany({ stage: "final" }, {
+    await FinalPlayed.updateMany({ $and: [{ stage: "final" }, { user: user }] }, {
         goalsLocal: 0,
         goalsVisitor: 0,
         result: "tie"
@@ -750,9 +782,10 @@ router.delete('/api/clear-final', cors(corsOptions), async(req, res)=>{
     res.send({ message: `Data cleared` })
 })
 //Get Podium
-router.get('/api/get-podium/', cors(corsOptions), async (req, res)=>{
-    let finalPlayed = await FinalPlayed.find().lean()
-    let thirdPlace = await ThirdPlacePlayed.find().lean()
+router.get('/api/get-podium/:user', cors(corsOptions), async (req, res)=>{
+    const user = req.params.user
+    let finalPlayed = await FinalPlayed.find({ user: user }).lean()
+    let thirdPlace = await ThirdPlacePlayed.find({ user: user }).lean()
     let podium = [];
     if(finalPlayed[0] || thirdPlace[0]){
         if(finalPlayed[0].result === "local"){
@@ -773,13 +806,14 @@ router.get('/api/get-podium/', cors(corsOptions), async (req, res)=>{
     res.send(podium)
 })
 //Obtener todos los ressultados de la etapa final
-router.get('/api/get-finalstages/', cors(corsOptions), async (req,res)=>{
+router.get('/api/get-finalstages/:user', cors(corsOptions), async (req,res)=>{
+    const user = req.params.user
     const finalStages = {}
     
-    const quarterfinals = await QuarterfinalsPlayed.find().lean()
-    const semifinals = await SemifinalsPlayed.find().lean()
-    const thirdPlace = await ThirdPlacePlayed.find().lean()
-    const final = await FinalPlayed.find().lean()
+    const quarterfinals = await QuarterfinalsPlayed.find({ user: user }).lean()
+    const semifinals = await SemifinalsPlayed.find({ user: user }).lean()
+    const thirdPlace = await ThirdPlacePlayed.find({ user: user }).lean()
+    const final = await FinalPlayed.find({ user: user }).lean()
 
     finalStages.quarterfinals = quarterfinals
     finalStages.semifinals = semifinals

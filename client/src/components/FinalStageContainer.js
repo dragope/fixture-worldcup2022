@@ -3,39 +3,39 @@ import Match from './Match'
 import './FinalStageContainer.css'
 import { useFixtureContext } from '../context/fixtureContext'
 
-function FinalStageContainer({ stage, countries, user }) {
+function FinalStageContainer({ stage, countries }) {
 
-  const { round16, quarterfinals, semifinals, thirdPlace, final, getFinalStages, getMatchesPlayed } = useFixtureContext()
+  const { round16, quarterfinals, semifinals, thirdPlace, final, getFinalStages, getMatchesPlayed, user } = useFixtureContext()
 
   useEffect(()=>{}, [round16, quarterfinals, semifinals, thirdPlace, final])
 
   const clearStage = () => {
     if(stage.name === "Round of 16"){
-      fetch('/api/clear-round16', { method: "DELETE" })
+      fetch(`/api/clear-round16/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
         .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Quarterfinals"){
-      fetch('/api/clear-quarterfinals', { method: "DELETE" })
+      fetch(`/api/clear-quarterfinals/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
         .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Semifinals"){
-      fetch('/api/clear-semifinals', { method: "DELETE" })
+      fetch(`/api/clear-semifinals/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
         .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Third Place"){
-      fetch('/api/clear-third-place', { method: "DELETE" })
+      fetch(`/api/clear-third-place/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
         .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Final"){
-      fetch('/api/clear-final', { method: "DELETE" })
+      fetch(`/api/clear-final/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
         .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))

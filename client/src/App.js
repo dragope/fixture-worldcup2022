@@ -12,31 +12,38 @@ import Podium from './components/Podium';
 
 function App() {
 
-    const [ user, setUser ] = useState({})
+    const [ logged, setLogged ] = useState(false)
+    const [ load, setLoad ] = useState(true)
 
     useEffect(()=>{
       onAuthStateChanged(auth, (data)=>{
         if(data){
-          setUser(data)
+          setLogged(data)
         }
       })
+      setLoad(false)
     }, [])
 
   return (
     <div className="App">
-      <FixtureContextProvider>
-        {user ?
-        <>
-          <Menu user ={user} setUser={setUser} />
-          <Modal user={user} />
-          <GroupStage user={user} />
-          <FinalStages user={user} />
-          <Podium />
-        </>
-        :
-        <Authentication />
-        }
-      </FixtureContextProvider>
+      {
+        load ?
+          <h1>Loading...</h1>
+          :
+          <FixtureContextProvider>
+            {logged ?
+            <>
+              <Menu />
+              <Modal />
+              <GroupStage />
+              <FinalStages />
+              <Podium />
+            </>
+            :
+            <Authentication />
+            }
+          </FixtureContextProvider>
+      }
     </div>
   );
 }

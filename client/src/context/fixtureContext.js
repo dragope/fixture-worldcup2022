@@ -1,4 +1,7 @@
 import React, { useContext, createContext, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
+
 
 const FixtureContext = createContext([]);
 
@@ -16,9 +19,16 @@ function FixtureContextProvider({ children }){
     const [ final, setFinal ] = useState([])
     const [ podium, setPodium ] = useState([])
     const [ modal, setModal ] = useState(false)
+    const [ user, setUser ] = useState({})
+
+    onAuthStateChanged(auth, (data)=>{
+        if(data){
+          setUser(data)
+        }
+    })
 
     const getMatchesPlayed = () => {
-        fetch(`http://localhost:3001/api/get-matches-played/`)
+        fetch(`http://localhost:3001/api/get-matches-played/${user.uid}`)
         .then(res =>  res.status === 200 && res.json())
         .then(data => setMatchesPlayed(data))
         .then(setLoadGroupStage(false))
@@ -26,6 +36,17 @@ function FixtureContextProvider({ children }){
     }
 
     const getFinalStages = () => {
+        fetch(`/api/get-finalstages/${user.uid}`)
+        .then(res => res.json())
+        .then((data) => {
+            setQuarterfinals(data.quarterfinals)
+            setSemifinals(data.semifinals)
+            setThirdPlace(data.thirdPlace)
+            setFinal(data.final)
+        })
+        .then(setLoadFinalStages(false))
+        .catch(err => console.error(err))
+
         // fetch('/api/get-quarterfinals')
         // .then(res => res.json())
         // .then(data => setQuarterfinals(data))
@@ -49,28 +70,18 @@ function FixtureContextProvider({ children }){
         // .then(data => setFinal(data))
         // .then(setLoadFinalStages(false))
         // .catch(err => console.error(err))
-
-        fetch('/api/get-finalstages')
-        .then(res => res.json())
-        .then((data) => {
-            setQuarterfinals(data.quarterfinals)
-            setSemifinals(data.semifinals)
-            setThirdPlace(data.thirdPlace)
-            setFinal(data.final)
-        })
-        .then(setLoadFinalStages(false))
-        .catch(err => console.error(err))
-
     }
 
    const getPodium = () => {
-        fetch('/api/get-podium/')
+        fetch(`/api/get-podium/${user.uid}`)
         .then(res => res.json())
         .then(data => setPodium(data))
     }
 
     return(
         <FixtureContext.Provider value={{
+            user,
+            setUser,
             getMatchesPlayed,
             getFinalStages,
             getPodium,

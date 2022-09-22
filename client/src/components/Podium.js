@@ -11,8 +11,6 @@ function Podium() {
         getPodium()
     },[final, thirdPlace])
 
-    console.log(final)
-
   return (
     <>
         {podium[2] &&

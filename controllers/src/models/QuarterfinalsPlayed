@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const QuarterfinalslayedSchema = new Schema({
+    user: { type: String, required: true },
     stage: { type: String, required: true },
     matchid: { type: Number, required: true },
     local: { type: Number, required: true },

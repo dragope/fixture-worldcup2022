@@ -7,7 +7,7 @@ import { useFixtureContext } from '../context/fixtureContext'
 function Group({ group, countries }) {
 
   const [ positions, setPositions ] = useState([])
-  const { setRound16 } = useFixtureContext()
+  const { setRound16, user } = useFixtureContext()
 
   useEffect(()=>{
     getGroupPositions()
@@ -20,7 +20,7 @@ function Group({ group, countries }) {
   }, [positions])
 
   function getGroupPositions(){
-      fetch(`http://localhost:3001/api/get-group/`, {
+      fetch(`http://localhost:3001/api/get-group/${user.uid}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -48,7 +48,7 @@ function Group({ group, countries }) {
 
   function getRound16(){
     positions[0] &&
-    fetch(`http://localhost:3001/api/set-round16/`, {
+    fetch(`http://localhost:3001/api/set-round16/${user.uid}`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -70,7 +70,7 @@ function Group({ group, countries }) {
       <div className="group-stage-group">
         <h1 className='group-stage-group-name'>Group { group.group }</h1>
         {
-            group.matches.map( match => <Match key={match.matchid} id={match.matchid} match={match} countries={countries} getGroupPositions={()=> getGroupPositions()}/> )
+            group.matches.map( match => <Match key={match.matchid} id={match.matchid} match={match} countries={countries} getGroupPositions={()=> getGroupPositions()} user={user} /> )
         }
       </div>  
         <GroupPositions key={"positions"+group.group} positions={positions}/>

@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Menu.css'
 import { auth } from '../firebase/firebaseConfig'
 import { signOut } from 'firebase/auth'
+import { useFixtureContext } from '../context/fixtureContext' //Eliminar cuando solucionemos lo del usuario
 
-function Menu({ user, setUser }) {
+function Menu({ userLogged }) {
+
+    const { setUser, user } = useFixtureContext();
+
+    //Eliminar cuando solucionemos lo del usuario
+    useEffect(()=>{
+      setUser(userLogged)
+    }, [])
+    //Eliminar cuando solucionemos lo del usuario
 
     const handleSignOut = () => {
     signOut(auth)

@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const MatchSchema = new Schema({
+    user: { type: String, required: true },
     group: { type: String, required: true },
     matchid: { type: Number, required: true },
     local: { type: Number, required: true },
