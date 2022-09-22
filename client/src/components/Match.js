@@ -7,7 +7,7 @@ import SetResult from './SetResult'
 
 function Match({ countries, match, getGroupPositions, round }) {
 
-    const { matchesPlayed, setModal, getFinalStages, user } = useFixtureContext()
+    const { matchesPlayed, setModal, getFinalStages, user, getPodium, openPodium } = useFixtureContext()
     const [ submited, setSubmited ] = useState(false)    
     const [ goalsLocal, setGoalsLocal ] = useState(0)
     const [ goalsVisitor, setGoalsVisitor ] = useState(0)
@@ -29,6 +29,9 @@ function Match({ countries, match, getGroupPositions, round }) {
             setSavedResult(prevMatch)
             let contenders = round.filter(x => x.matchid === match.matchid)
             setMatchContenders(contenders)
+        }
+        if(match.stage === "final" && savedResult.result !== "tie"){
+            getPodium()
         }
     }, [matchesPlayed, round])
 
@@ -169,6 +172,8 @@ function Match({ countries, match, getGroupPositions, round }) {
                 })
             })
             .then(res => res.status === 200 && getFinalStages())
+            .then(()=> getPodium())
+            .then(()=> openPodium())
             .catch(err => console.error(err))
         }
     }

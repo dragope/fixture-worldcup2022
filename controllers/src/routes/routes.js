@@ -591,7 +591,7 @@ router.get('/api/get-final/', cors(corsOptions), async (req, res)=> {
 
 //Setear resultado del Tercer Puesto
 router.post('/api/set-thirdplace', cors(corsOptions), async (req, res)=>{
-    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
     
     let result = ""
     if(goalsLocal > goalsVisitor){
@@ -600,19 +600,19 @@ router.post('/api/set-thirdplace', cors(corsOptions), async (req, res)=>{
         result = "visitor"
     }
 
-    let thirdPlace = await ThirdPlacePlayed.find().lean()
+    let thirdPlace = await ThirdPlacePlayed.find({ user: user }).lean()
 
     await ThirdPlacePlayed.findOneAndUpdate( { _id: thirdPlace[0]._id }, {
         goalsLocal: goalsLocal,
         goalsVisitor: goalsVisitor,
         result: result
     })
-    res.send({ message: `Third Place game played. ${result === "local" ? local : visitor} won and got the bronze medal, ${result === "local" ? visitor : local} finished the World Cup fourth` })
+    res.send({ message: `Third Place game played. ${result === "local" ? countryLocal : countryVisitor} won and got the bronze medal, ${result === "local" ? countryVisitor : countryLocal} finished the World Cup fourth` })
 })
 
 //Setear el resultado de la Final
 router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
-    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date } = req.body
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
     
     let result = ""
     if(goalsLocal > goalsVisitor){
@@ -621,50 +621,32 @@ router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
         result = "visitor"
     }
 
-    let final = await FinalPlayed.find().lean()
+    let final = await FinalPlayed.find({ user: user }).lean()
 
     await FinalPlayed.findOneAndUpdate( { _id: final[0]._id }, {
         goalsLocal: goalsLocal,
         goalsVisitor: goalsVisitor,
         result: result
     })
-    res.send({ message: `The Final was played. ${result === "local" ? local : visitor} is the new World Champion, ${result === "local" ? visitor : local} finished the World Cup second` })
+    res.send({ message: `The Final was played. ${result === "local" ? countryLocal : countryVisitor} is the new World Champion, ${result === "local" ? countryVisitor : countryLocal} finished the World Cup second` })
+    console.log('Final set')
 })
 
 //Limpiar fase de grupos
 router.delete('/api/clear-group-stage/:user', cors(corsOptions), async (req, res)=>{
     const user = req.params.user
 
-    mongoose.connection.db.dropCollection(
-                        "matchplayeds",
-                        function(err, result) {
-                            console.log("Group Matches cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "round16playeds",
-                        function(err, result) {
-                            console.log("Round of 16 cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "quarterfinalsplayeds",
-                        function(err, result) {
-                            console.log("Quarterfinals cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "semifinalsplayeds",
-                        function(err, result) {
-                            console.log("Semifinals cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "thirdplaceplayeds",
-                        function(err, result) {
-                            console.log("Third Place cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "finalplayeds",
-                        function(err, result) {
-                            console.log("Final cleared");
-                        })
+
+
+    await MatchPlayed.deleteMany({ user: user })
+    await Round16Played.deleteMany({ user: user })
+    await QuarterfinalsPlayed.deleteMany({ user: user })
+    await SemifinalsPlayed.deleteMany({ user: user })
+    await ThirdPlacePlayed.deleteMany({ user: user })
+    await FinalPlayed.deleteMany({ user: user })
+
+    console.log("Limpiar fase de grupos")
+
     res.send({ message: `Data cleared` })
 })
 
@@ -678,26 +660,11 @@ router.delete('/api/clear-round16/:user', cors(corsOptions), async(req, res)=>{
         result: "tie"
     })
 
-    mongoose.connection.db.dropCollection(
-                        "quarterfinalsplayeds",
-                        function(err, result) {
-                            console.log("Quarterfinals cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "semifinalsplayeds",
-                        function(err, result) {
-                            console.log("Semifinals cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "thirdplaceplayeds",
-                        function(err, result) {
-                            console.log("Thrid Place cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "finalplayeds",
-                        function(err, result) {
-                            console.log("Final cleared");
-                        })
+    await QuarterfinalsPlayed.deleteMany({ user: user })
+    await SemifinalsPlayed.deleteMany({ user: user })
+    await ThirdPlacePlayed.deleteMany({ user: user })
+    await FinalPlayed.deleteMany({ user: user })
+
     res.send({ message: `Data cleared` })
 })
 
@@ -711,21 +678,10 @@ router.delete('/api/clear-quarterfinals/:user', cors(corsOptions), async(req, re
         result: "tie"
     })
 
-    mongoose.connection.db.dropCollection(
-                        "semifinalsplayeds",
-                        function(err, result) {
-                            console.log("Semifinals cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "thirdplaceplayeds",
-                        function(err, result) {
-                            console.log("Third Place cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "finalplayeds",
-                        function(err, result) {
-                            console.log("Final cleared");
-                        })
+    await SemifinalsPlayed.deleteMany({ user: user })
+    await ThirdPlacePlayed.deleteMany({ user: user })
+    await FinalPlayed.deleteMany({ user: user })
+
     res.send({ message: `Data cleared` })
 })
 
@@ -739,16 +695,9 @@ router.delete('/api/clear-semifinals/:user', cors(corsOptions), async(req, res)=
         result: "tie"
     })
 
-    mongoose.connection.db.dropCollection(
-                        "thirdplaceplayeds",
-                        function(err, result) {
-                            console.log("Third Place cleared");
-                        })
-    mongoose.connection.db.dropCollection(
-                        "finalplayeds",
-                        function(err, result) {
-                            console.log("Final cleared");
-                        })
+    await ThirdPlacePlayed.deleteMany({ user: user })
+    await FinalPlayed.deleteMany({ user: user })
+
     res.send({ message: `Data cleared` })
 })
 
@@ -756,7 +705,7 @@ router.delete('/api/clear-semifinals/:user', cors(corsOptions), async(req, res)=
 router.delete('/api/clear-third-place/:user', cors(corsOptions), async(req, res)=>{
     const user = req.params.user
 
-    await ThirdPlacePlayed.updateMany({ stage: "third place" }, {
+    await ThirdPlacePlayed.updateMany({ $and: [{ stage: "third place" }, { user: user }] }, {
         goalsLocal: 0,
         goalsVisitor: 0,
         result: "tie"

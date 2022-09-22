@@ -4,21 +4,23 @@ import Group from './Group'
 import data from '../data/data'
 import { useFixtureContext } from '../context/fixtureContext'
 
-function GroupStage({ user }) {
+function GroupStage() {
 
-  const { getMatchesPlayed, loadGroupStage, getFinalStages, getGroupStages } = useFixtureContext()
+  const { getMatchesPlayed, loadGroupStage, setLoadGoupStage, getFinalStages, getGroupStages, user, setPodium } = useFixtureContext()
 
   useEffect(()=>{
     getMatchesPlayed()
   }, [])
 
   const clearGroupStage = () => {
-    fetch('/api/clear-group-stage', { method: "DELETE" })
+    fetch(`/api/clear-group-stage/${user.uid}`, { method: "DELETE" })
       .then((res) => {if(res.status === 200){
         getGroupStages()
         getFinalStages()
       }})
       .then(()=> getMatchesPlayed())
+      .then(setLoadGoupStage(false))
+      .then(setPodium([]))
       .catch(err => console.error(err))
   }
 

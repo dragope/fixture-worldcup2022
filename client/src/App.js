@@ -9,11 +9,13 @@ import Authentication from './components/Authentication';
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase/firebaseConfig';
 import Podium from './components/Podium';
+import PodiumModal from './components/PodiumModal';
 
 function App() {
 
     const [ logged, setLogged ] = useState(false)
     const [ load, setLoad ] = useState(true)
+    
 
     useEffect(()=>{
       onAuthStateChanged(auth, (data)=>{
@@ -34,10 +36,12 @@ function App() {
             {logged ?
             <>
               <Menu />
+              <PodiumModal />
               <Modal />
               <GroupStage />
               <FinalStages />
               <Podium />
+              
             </>
             :
             <Authentication />

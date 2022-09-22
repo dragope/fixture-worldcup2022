@@ -1,0 +1,93 @@
+.podium-modal-container{
+    visibility: hidden;
+    z-index: 100;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.383);
+}
+.podium-modal {
+    width: 50vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 1.5%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 1%;
+}
+.podium-modal > h1 {
+    width: 100%;
+    color: rgb(125, 42, 42);
+    line-height: 80px;
+    text-align: center;
+}
+.podium-modal-button-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.podium-modal-button-container > button {
+    border: none;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.podium-modal-container-champion {
+    width: 100%;
+}
+
+.podium-modal-container-second {
+    width: 50%;
+}
+
+.podium-modal-container-third {
+    width: 50%;
+}
+
+.podium-modal-container-team {
+    padding: 20px;
+    color: black;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.podium-modal-container-team>img {
+    width: 40px;
+    height: 40px;
+}
+
+.podium-modal-medal {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#champion {
+    background-color: rgb(179, 179, 41);
+}
+
+#silver {
+    background-color: rgb(193, 193, 193);
+}
+
+#bronze {
+    background-color: rgb(124, 96, 44);
+}

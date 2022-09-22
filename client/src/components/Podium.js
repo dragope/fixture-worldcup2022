@@ -5,11 +5,11 @@ import { useFixtureContext } from '../context/fixtureContext'
 
 function Podium() {
 
-    const { final, thirdPlace, podium, getPodium } = useFixtureContext()
+    const { final, thirdPlace, podium } = useFixtureContext()
 
     useEffect(()=>{
-        getPodium()
-    },[final, thirdPlace])
+
+    },[final, thirdPlace, podium])
 
   return (
     <>

@@ -1,11 +1,16 @@
 import React from 'react'
 import './Result.css'
+import { useFixtureContext } from '../context/fixtureContext'
 
-function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, setGoalsVisitor, stage, submitResult, setModal }) {
+function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, setGoalsVisitor, stage, submitResult }) {
+
+    const { openModal } = useFixtureContext()
 
     const handleClick = () => {
+        console.log(stage + goalsLocal + goalsVisitor)
         if(stage !== "group" && goalsLocal === goalsVisitor){
-           setModal(true)
+           openModal()
+        alert('Matches cannot be a tie')
         } else {
             submitResult()
         }

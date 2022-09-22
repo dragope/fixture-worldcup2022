@@ -12,6 +12,7 @@ function FixtureContextProvider({ children }){
     const [ matchesPlayed, setMatchesPlayed ] = useState([])
     const [ loadGroupStage, setLoadGroupStage ] = useState(true)
     const [ loadFinalStages, setLoadFinalStages ] = useState(true)
+    const [ loadPodiumModal, setLoadPodiumModal ] = useState(false)
     const [ round16, setRound16 ] = useState([])
     const [ quarterfinals, setQuarterfinals ] = useState([])
     const [ semifinals, setSemifinals ] = useState([])
@@ -28,6 +29,7 @@ function FixtureContextProvider({ children }){
     })
 
     const getMatchesPlayed = () => {
+        setLoadGroupStage(true)
         fetch(`http://localhost:3001/api/get-matches-played/${user.uid}`)
         .then(res =>  res.status === 200 && res.json())
         .then(data => setMatchesPlayed(data))
@@ -36,6 +38,7 @@ function FixtureContextProvider({ children }){
     }
 
     const getFinalStages = () => {
+        setLoadFinalStages(true)
         fetch(`/api/get-finalstages/${user.uid}`)
         .then(res => res.json())
         .then((data) => {
@@ -75,7 +78,27 @@ function FixtureContextProvider({ children }){
    const getPodium = () => {
         fetch(`/api/get-podium/${user.uid}`)
         .then(res => res.json())
-        .then(data => setPodium(data))
+        .then((data) => {
+            setPodium(data)
+        })
+    }
+
+    const openModal = () => {
+        const modal = document.querySelector('.modal-container')
+        modal.style.visibility = 'visible';
+
+    }
+    const closeModal = () => {
+        const modal = document.querySelector('.modal-container')
+        modal.style.visibility = "hidden";
+    }
+    const openPodium = () => {
+        const podiummodal = document.querySelector('.podium-modal-container')
+        podiummodal.style.visibility = 'visible';
+    }
+    const closePodium = () => {
+        const podiummodal = document.querySelector('.podium-modal-container')
+        podiummodal.style.visibility = 'hidden';
     }
 
     return(
@@ -86,6 +109,8 @@ function FixtureContextProvider({ children }){
             getFinalStages,
             getPodium,
             matchesPlayed,
+            loadPodiumModal,
+            setLoadPodiumModal,
             podium,
             setPodium,
             loadGroupStage,
@@ -102,8 +127,10 @@ function FixtureContextProvider({ children }){
             setThirdPlace,
             final,
             setFinal,
-            modal,
-            setModal
+            openModal,
+            closeModal,
+            openPodium,
+            closePodium
         }}>
             {children}
         </FixtureContext.Provider>
