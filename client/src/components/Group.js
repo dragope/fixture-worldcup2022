@@ -4,15 +4,15 @@ import GroupPositions from './GroupPositions'
 import Match from './Match'
 import { useFixtureContext } from '../context/fixtureContext'
 
-function Group({ group, countries }) {
+function Group({ group, countries, user }) {
 
   const [ positions, setPositions ] = useState([])
-  const { setRound16, user } = useFixtureContext()
+  const { setRound16, matchesPlayed } = useFixtureContext()
 
   useEffect(()=>{
     getGroupPositions()
     // eslint-disable-next-line
-  }, [])
+  }, [matchesPlayed])
 
   useEffect(()=>{
     getRound16()

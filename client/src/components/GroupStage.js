@@ -1,26 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './GroupStage.css'
 import Group from './Group'
 import data from '../data/data'
 import { useFixtureContext } from '../context/fixtureContext'
+import { useAuthContext } from '../context/AuthContext'
 
 function GroupStage() {
 
-  const { getMatchesPlayed, loadGroupStage, setLoadGoupStage, getFinalStages, getGroupStages, user, setPodium } = useFixtureContext()
+  const { getMatchesPlayed, loadGroupStage, getFinalStages, matchesPlayed } = useFixtureContext()
+  const { user } = useAuthContext()
+  const [ load, setLoad ] = useState(false)
 
   useEffect(()=>{
     getMatchesPlayed()
   }, [])
 
   const clearGroupStage = () => {
+    console.log(load)
     fetch(`/api/clear-group-stage/${user.uid}`, { method: "DELETE" })
       .then((res) => {if(res.status === 200){
-        getGroupStages()
+        getMatchesPlayed()
         getFinalStages()
       }})
-      .then(()=> getMatchesPlayed())
-      .then(setLoadGoupStage(false))
-      .then(setPodium([]))
+      .then(setLoad(!load))
       .catch(err => console.error(err))
   }
 

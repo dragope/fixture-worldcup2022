@@ -5,9 +5,9 @@ import { useFixtureContext } from '../context/fixtureContext'
 import OpenedResult from './OpenedResult'
 import SetResult from './SetResult'
 
-function Match({ countries, match, getGroupPositions, round }) {
+function Match({ countries, match, getGroupPositions, round, user }) {
 
-    const { matchesPlayed, setModal, getFinalStages, user, getPodium, openPodium } = useFixtureContext()
+    const { matchesPlayed, setModal, getFinalStages, getMatchesPlayed, getPodium, openPodium } = useFixtureContext()
     const [ submited, setSubmited ] = useState(false)    
     const [ goalsLocal, setGoalsLocal ] = useState(0)
     const [ goalsVisitor, setGoalsVisitor ] = useState(0)
@@ -15,6 +15,9 @@ function Match({ countries, match, getGroupPositions, round }) {
     const [ matchContenders, setMatchContenders ] = useState({})
 
     useEffect(()=>{
+        setGoalsLocal(0)
+        setGoalsVisitor(0)
+        setSubmited(false)
         if(match.stage === 'group'){
             const prevMatch = matchesPlayed.filter( x => x.matchid === match.matchid)
             if(prevMatch[0]){
@@ -23,7 +26,7 @@ function Match({ countries, match, getGroupPositions, round }) {
             setSavedResult(prevMatch)
         } else {
             const prevMatch = round.filter( x => x.matchid === match.matchid)
-            if(prevMatch[0]){
+            if(prevMatch[0] && prevMatch[0].result !== "tie"){
                 setSubmited(true)
             }
             setSavedResult(prevMatch)
@@ -34,6 +37,8 @@ function Match({ countries, match, getGroupPositions, round }) {
             getPodium()
         }
     }, [matchesPlayed, round])
+
+    // useEffect(()=>{}, [])
 
     const submitResult = () => {
         setSubmited(true)
@@ -56,7 +61,10 @@ function Match({ countries, match, getGroupPositions, round }) {
                 }),
                 mode: 'cors'
             })
-                .then(res => res.status === 200 && getGroupPositions())
+                .then((res) => {if(res.status === 200){
+                    getGroupPositions()
+                    getMatchesPlayed()
+                }})
                 .catch(err => console.error(err))
         }
         if(match.stage === "round of 16"){

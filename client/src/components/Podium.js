@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import './Podium.css'
 import data from '../data/data'
 import { useFixtureContext } from '../context/fixtureContext'
@@ -7,9 +7,7 @@ function Podium() {
 
     const { final, thirdPlace, podium } = useFixtureContext()
 
-    useEffect(()=>{
-
-    },[final, thirdPlace, podium])
+    useEffect(()=>{},[final, thirdPlace, podium])
 
   return (
     <>

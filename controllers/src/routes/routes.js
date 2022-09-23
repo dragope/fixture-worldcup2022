@@ -18,9 +18,11 @@ const { default: mongoose } = require('mongoose');
 router.get('/api/get-matches-played/:user', cors(corsOptions), async(req, res)=>{
     const user = req.params.user
     const GroupMatches = await MatchPlayed.find({ user: user }).lean()
-    const Round16Matches = await Round16Played.find({ user: user }).lean()
-    const QuarterfinalsMatches = await QuarterfinalsPlayed.find({ user: user }).lean()
-    const Matches = GroupMatches.concat(Round16Matches, QuarterfinalsMatches)
+    // const Round16Matches = await Round16Played.find({ user: user }).lean()
+    // const QuarterfinalsMatches = await QuarterfinalsPlayed.find({ user: user }).lean()
+    // const Matches = GroupMatches.concat(Round16Matches, QuarterfinalsMatches)
+    const Matches = GroupMatches
+    console.log(Matches)
     res.send(Matches)
 })
 
@@ -45,9 +47,7 @@ router.post('/api/group-match/', cors(corsOptions), async (req, res)=>{
     const prevMatch = await MatchPlayed.find({ matchid: matchid, user: user })
     if(prevMatch.length > 0){
         await MatchPlayed.findOneAndUpdate({ matchid: matchid, user: user }, { goalsLocal: goalsLocal, goalsVisitor: goalsVisitor, result: result, pointsLocal: pointsLocal, pointsVisitor: pointsVisitor })
-        console.log('Modified Match')
     } else {
-        console.log(newMatch)
         await newMatch.save()
     }
     res.send({message: `Match ${countryLocal} vs. ${countryVisitor} added`, error: "false"})
@@ -635,8 +635,6 @@ router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
 //Limpiar fase de grupos
 router.delete('/api/clear-group-stage/:user', cors(corsOptions), async (req, res)=>{
     const user = req.params.user
-
-
 
     await MatchPlayed.deleteMany({ user: user })
     await Round16Played.deleteMany({ user: user })

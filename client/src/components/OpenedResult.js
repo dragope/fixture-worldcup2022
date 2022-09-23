@@ -7,10 +7,8 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
     const { openModal } = useFixtureContext()
 
     const handleClick = () => {
-        console.log(stage + goalsLocal + goalsVisitor)
-        if(stage !== "group" && goalsLocal === goalsVisitor){
+        if( stage !== "group" && Number(goalsLocal) === Number(goalsVisitor)){
            openModal()
-        alert('Matches cannot be a tie')
         } else {
             submitResult()
         }

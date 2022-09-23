@@ -1,29 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Authentication.css'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '../firebase/firebaseConfig'
-import { useFixtureContext } from '../context/fixtureContext';
+import { useAuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom'
 
 const Authentication = () => {
 
-    const { user, setUser } = useFixtureContext();
+    const { user, signup, login } = useAuthContext()
+    const navigate = useNavigate()
     const [ registered, setRegistered ] = useState(true)
     const [ error, setError ] = useState(null)
 
-    const handleAuthentication = (e) => {
+    useEffect(()=>{
+        if(user){
+            navigate('/')
+        }
+    }, [user])
+
+    const handleAuthentication = async (e) => {
         e.preventDefault()
         const email = e.target.email.value
         const password = e.target.password.value
         if(registered){
-            signInWithEmailAndPassword(auth, email, password)
-            .then(resp => setUser(resp))
-            .catch(err => setError(err))
+            try{
+                await login(email, password)
+                navigate('/')
+            } catch(error){
+                setError(error.message)
+            }
         } else {
             const confirmpassword = e.target.confirmpassword.value
             if(password === confirmpassword){
-                createUserWithEmailAndPassword(auth, email, password)
-                .then(data => setUser(data))
-                .catch(err => setError(err))
+                try{
+                    await signup(email, password)
+                    navigate('/')
+                } catch (error){
+                    setError(error.message)
+                }
             } else {
                 setError('Passwords do not match')
             }
@@ -31,9 +43,7 @@ const Authentication = () => {
     }
 
     const handleSignOut = () => {
-        signOut(auth)
-        .then(()=> setUser(null))
-        .catch(err => console.log(err))
+        console.log('sign out')
     }
 
   return (

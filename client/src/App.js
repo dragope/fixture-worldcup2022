@@ -1,55 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
-import GroupStage from './components/GroupStage';
-import FinalStages from './components/FinalStages';
 import FixtureContextProvider from './context/fixtureContext';
-import Modal from './components/Modal';
-import Menu from './components/Menu';
+import Fixture from './components/Fixture';
 import Authentication from './components/Authentication';
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from './firebase/firebaseConfig';
-import Podium from './components/Podium';
-import PodiumModal from './components/PodiumModal';
+import AuthContextProvider from './context/AuthContext'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './protected-route/ProtectedRoute';
 
 function App() {
 
-    const [ logged, setLogged ] = useState(false)
-    const [ load, setLoad ] = useState(true)
-    
-
-    useEffect(()=>{
-      onAuthStateChanged(auth, (data)=>{
-        if(data){
-          setLogged(data)
-        }
-      })
-      setLoad(false)
-    }, [])
-
   return (
     <div className="App">
-      {
-        load ?
-          <h1>Loading...</h1>
-          :
-          <FixtureContextProvider>
-            {logged ?
-            <>
-              <Menu />
-              <PodiumModal />
-              <Modal />
-              <GroupStage />
-              <FinalStages />
-              <Podium />
-              
-            </>
-            :
-            <Authentication />
-            }
-          </FixtureContextProvider>
-      }
+          <AuthContextProvider>
+            <FixtureContextProvider>
+              <BrowserRouter>
+              <Routes>
+                <Route 
+                  path='/'
+                  element={
+                    <ProtectedRoute>
+                      <Fixture />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route 
+                  path='/authentication'
+                  element={<Authentication />}
+                />
+              </Routes>
+              </BrowserRouter>
+            </FixtureContextProvider>
+          </AuthContextProvider>
     </div>
-  );
+  )
 }
 
 export default App;

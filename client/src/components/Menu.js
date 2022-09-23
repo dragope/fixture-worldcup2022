@@ -1,23 +1,16 @@
 import React, { useEffect } from 'react'
 import './Menu.css'
-import { auth } from '../firebase/firebaseConfig'
-import { signOut } from 'firebase/auth'
-import { useFixtureContext } from '../context/fixtureContext' //Eliminar cuando solucionemos lo del usuario
+import { useAuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
-function Menu({ userLogged }) {
+function Menu() {
 
-    const { setUser, user } = useFixtureContext();
+    const { user, logout } = useAuthContext()
+    const navigate = useNavigate();
 
-    //Eliminar cuando solucionemos lo del usuario
-    useEffect(()=>{
-      setUser(userLogged)
-    }, [])
-    //Eliminar cuando solucionemos lo del usuario
-
-    const handleSignOut = () => {
-    signOut(auth)
-    .then(()=> setUser(null))
-    .catch(err => console.log(err))
+    const handleSignOut = async () => {
+      await logout()
+      navigate('/authentication')
     }
 
   return (

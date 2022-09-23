@@ -1,13 +1,13 @@
 import React, { useContext, createContext, useState } from 'react'
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/firebaseConfig';
-
+import { useAuthContext } from './AuthContext';
 
 const FixtureContext = createContext([]);
 
 export const useFixtureContext = () => useContext(FixtureContext);
 
 function FixtureContextProvider({ children }){
+
+    const { user } = useAuthContext()
 
     const [ matchesPlayed, setMatchesPlayed ] = useState([])
     const [ loadGroupStage, setLoadGroupStage ] = useState(true)
@@ -19,26 +19,21 @@ function FixtureContextProvider({ children }){
     const [ thirdPlace, setThirdPlace ] = useState([])
     const [ final, setFinal ] = useState([])
     const [ podium, setPodium ] = useState([])
-    const [ modal, setModal ] = useState(false)
-    const [ user, setUser ] = useState({})
-
-    onAuthStateChanged(auth, (data)=>{
-        if(data){
-          setUser(data)
-        }
-    })
 
     const getMatchesPlayed = () => {
         setLoadGroupStage(true)
+        console.log("getMatchesPlayed")
         fetch(`http://localhost:3001/api/get-matches-played/${user.uid}`)
         .then(res =>  res.status === 200 && res.json())
         .then(data => setMatchesPlayed(data))
+        .then(()=> console.log(matchesPlayed))
         .then(setLoadGroupStage(false))
         .catch(err => console.error(err))
     }
 
     const getFinalStages = () => {
         setLoadFinalStages(true)
+        console.log('getFinalStages')
         fetch(`/api/get-finalstages/${user.uid}`)
         .then(res => res.json())
         .then((data) => {
@@ -75,7 +70,7 @@ function FixtureContextProvider({ children }){
         // .catch(err => console.error(err))
     }
 
-   const getPodium = () => {
+    const getPodium = () => {
         fetch(`/api/get-podium/${user.uid}`)
         .then(res => res.json())
         .then((data) => {
@@ -103,8 +98,6 @@ function FixtureContextProvider({ children }){
 
     return(
         <FixtureContext.Provider value={{
-            user,
-            setUser,
             getMatchesPlayed,
             getFinalStages,
             getPodium,
