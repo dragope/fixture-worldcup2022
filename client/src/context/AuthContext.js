@@ -6,8 +6,9 @@ const AuthContext = createContext([])
 
 export const useAuthContext = () => {
     const context = useContext(AuthContext);
-    if(!context)
+    if(!context){
         throw new Error('There is no Auth provider');
+    }
         return context
 }
 
@@ -16,18 +17,14 @@ function AuthContextProvider({ children }){
     const [ user, setUser ] = useState(null)
     const [ load, setLoad ] = useState(true)
 
-    const signup = (email, password) => {
-        createUserWithEmailAndPassword(auth, email, password)
-    }
+    const signup = (email, password) => createUserWithEmailAndPassword(auth, email, password)
 
-    const login = (email, password) => {
-        signInWithEmailAndPassword(auth, email, password)
-    }
+    const login = (email, password) =>  signInWithEmailAndPassword(auth, email, password)
 
     const logout = () => {
         signOut(auth)
     }
-    
+
     useEffect(()=>{
         const unsuscribe = onAuthStateChanged(auth, currentUser => {
         setUser(currentUser)

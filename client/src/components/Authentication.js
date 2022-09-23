@@ -16,6 +16,11 @@ const Authentication = () => {
         }
     }, [user])
 
+    const handleChangeFunction = () => {
+        setRegistered(!registered) 
+        setError(null)
+    }
+
     const handleAuthentication = async (e) => {
         e.preventDefault()
         const email = e.target.email.value
@@ -25,7 +30,8 @@ const Authentication = () => {
                 await login(email, password)
                 navigate('/')
             } catch(error){
-                setError(error.message)
+                error.message === "Firebase: Error (auth/user-not-found)." && setError('User not found. Please try again or register.')
+                error.message === "Firebase: Error (auth/wrong-password)." && setError('The password you entered is invaid. Try again, please.')
             }
         } else {
             const confirmpassword = e.target.confirmpassword.value
@@ -34,16 +40,13 @@ const Authentication = () => {
                     await signup(email, password)
                     navigate('/')
                 } catch (error){
-                    setError(error.message)
+                    error.message === "Firebase: Error (auth/email-already-in-use)." && setError("Email already in use. Choose another or login.")
+                    error.message === "Firebase: Error (auth/invalid-email)." && setError('The email used is invalid, please check it and try again.')
                 }
             } else {
                 setError('Passwords do not match')
             }
         }
-    }
-
-    const handleSignOut = () => {
-        console.log('sign out')
     }
 
   return (
@@ -52,9 +55,9 @@ const Authentication = () => {
         <h1 className='authentication-title'>{registered ? "Login" : "Sign Up"}</h1>
         <form className='authentication-form' onSubmit={handleAuthentication}>
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" />
+            <input type="email" id="email" placeholder="you@domain.com" autoComplete='username'/>
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" />
+            <input type="password" id="password" placeholder='Password' autoComplete='current-password' />
             {!registered && 
             <>
                 <label htmlFor="password">Confirm Password</label>
@@ -62,8 +65,7 @@ const Authentication = () => {
             </>}
             <button>{registered ? "Log In" : "Sign Up"}</button>
         </form>
-        <button className='authentication-state-button' id="second" onClick={()=> setRegistered(!registered)}>{registered ? "Not registered? Create an account here!" : "Already registered? Login here!"}</button>
-        <button className='authentication-state-button' onClick={()=> handleSignOut()}>Sign Out</button>
+        <button className='authentication-state-button' id="second" onClick={handleChangeFunction}>{registered ? "Not registered? Create an account here!" : "Already registered? Login here!"}</button>
         {error &&
             <p className='authentication-error'>{error}</p>
         }

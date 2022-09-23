@@ -22,26 +22,25 @@ function FixtureContextProvider({ children }){
 
     const getMatchesPlayed = () => {
         setLoadGroupStage(true)
-        console.log("getMatchesPlayed")
         fetch(`http://localhost:3001/api/get-matches-played/${user.uid}`)
         .then(res =>  res.status === 200 && res.json())
         .then(data => setMatchesPlayed(data))
-        .then(()=> console.log(matchesPlayed))
         .then(setLoadGroupStage(false))
         .catch(err => console.error(err))
     }
 
     const getFinalStages = () => {
         setLoadFinalStages(true)
-        console.log('getFinalStages')
         fetch(`/api/get-finalstages/${user.uid}`)
         .then(res => res.json())
         .then((data) => {
+            setRound16(data.round16)
             setQuarterfinals(data.quarterfinals)
             setSemifinals(data.semifinals)
             setThirdPlace(data.thirdPlace)
             setFinal(data.final)
         })
+        .then(()=> getMatchesPlayed())
         .then(setLoadFinalStages(false))
         .catch(err => console.error(err))
 

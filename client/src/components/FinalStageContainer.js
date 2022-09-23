@@ -15,31 +15,26 @@ function FinalStageContainer({ stage, countries }) {
     if(stage.name === "Round of 16"){
       fetch(`/api/clear-round16/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
-        // .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Quarterfinals"){
       fetch(`/api/clear-quarterfinals/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
-        // .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Semifinals"){
       fetch(`/api/clear-semifinals/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
-        // .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Third Place"){
       fetch(`/api/clear-third-place/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
-        // .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
     if(stage.name === "Final"){
       fetch(`/api/clear-final/${user.uid}`, { method: "DELETE" })
         .then(res => res.status === 200 && getFinalStages())
-        // .then(()=> getMatchesPlayed())
         .catch(err => console.error(err))
     }
   }
