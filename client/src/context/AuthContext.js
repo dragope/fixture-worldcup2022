@@ -24,7 +24,7 @@ function AuthContextProvider({ children }){
     const logout = () => {
         signOut(auth)
     }
-
+    
     useEffect(()=>{
         const unsuscribe = onAuthStateChanged(auth, currentUser => {
         setUser(currentUser)

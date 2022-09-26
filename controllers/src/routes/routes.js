@@ -559,6 +559,27 @@ router.post('/api/set-semifinals/', cors(corsOptions), async(req, res)=>{
 res.send({ message: `Result updated correctly: ${countryLocal} ${goalsLocal} vs ${countryVisitor} ${goalsVisitor}, in ${stage}, match ${matchid}. ${result === "local" ? local : visitor} advanced to the final and ${result === "local" ? visitor : local} to the third place match` })
 })
 
+//Setear resultado del Tercer Puesto
+router.post('/api/set-thirdplace', cors(corsOptions), async (req, res)=>{
+    const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
+    
+    let result = ""
+    if(goalsLocal > goalsVisitor){
+        result = "local"
+    } else {
+        result = "visitor"
+    }
+
+    let thirdPlace = await ThirdPlacePlayed.find({ user: user }).lean()
+
+    await ThirdPlacePlayed.findOneAndUpdate( { _id: thirdPlace[0]._id }, {
+        goalsLocal: goalsLocal,
+        goalsVisitor: goalsVisitor,
+        result: result
+    })
+    res.send({ message: `Third Place game played. ${result === "local" ? countryLocal : countryVisitor} won and got the bronze medal, ${result === "local" ? countryVisitor : countryLocal} finished the World Cup fourth` })
+})
+
 //Setear el resultado de la Final
 router.post('/api/set-final', cors(corsOptions), async (req, res)=>{
     const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
@@ -701,7 +722,7 @@ router.get('/api/get-podium/:user', cors(corsOptions), async (req, res)=>{
     }
     res.send(podium)
 })
-//Obtener todos los ressultados de la etapa final
+//Obtener todos los resultados de la etapa final
 router.get('/api/get-finalstages/:user', cors(corsOptions), async (req,res)=>{
     const user = req.params.user
     const finalStages = {}
@@ -748,23 +769,3 @@ module.exports = router
 //     res.send(final)
 // })
 
-// //Setear resultado del Tercer Puesto
-// router.post('/api/set-thirdplace', cors(corsOptions), async (req, res)=>{
-//     const { matchid, stage, local, visitor, countryLocal, countryVisitor, goalsLocal, goalsVisitor, stadium, date, user } = req.body
-    
-//     let result = ""
-//     if(goalsLocal > goalsVisitor){
-//         result = "local"
-//     } else {
-//         result = "visitor"
-//     }
-
-//     let thirdPlace = await ThirdPlacePlayed.find({ user: user }).lean()
-
-//     await ThirdPlacePlayed.findOneAndUpdate( { _id: thirdPlace[0]._id }, {
-//         goalsLocal: goalsLocal,
-//         goalsVisitor: goalsVisitor,
-//         result: result
-//     })
-//     res.send({ message: `Third Place game played. ${result === "local" ? countryLocal : countryVisitor} won and got the bronze medal, ${result === "local" ? countryVisitor : countryLocal} finished the World Cup fourth` })
-// })

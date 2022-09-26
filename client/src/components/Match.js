@@ -38,8 +38,6 @@ function Match({ countries, match, getGroupPositions, round, user }) {
         }
     }, [matchesPlayed, round])
 
-    // useEffect(()=>{}, [])
-
     const submitResult = () => {
         setSubmited(true)
         if(match.stage === "group"){
