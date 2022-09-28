@@ -22,7 +22,7 @@ function FixtureContextProvider({ children }){
 
     const getMatchesPlayed = () => {
         setLoadGroupStage(true)
-        fetch(`http://localhost:3001/api/get-matches-played/${user.uid}`)
+        fetch(`${process.env.REACT_APP_BACK_URL}/api/get-matches-played/${user.uid}`)
         .then(res =>  res.status === 200 && res.json())
         .then(data => setMatchesPlayed(data))
         .then(setLoadGroupStage(false))
@@ -31,7 +31,7 @@ function FixtureContextProvider({ children }){
 
     const getFinalStages = () => {
         setLoadFinalStages(true)
-        fetch(`/api/get-finalstages/${user.uid}`)
+        fetch(`${process.env.REACT_APP_BACK_URL}/api/get-finalstages/${user.uid}`)
         .then(res => res.json())
         .then((data) => {
             setRound16(data.round16)
@@ -70,7 +70,7 @@ function FixtureContextProvider({ children }){
     }
 
     const getPodium = () => {
-        fetch(`/api/get-podium/${user.uid}`)
+        fetch(`${process.env.REACT_APP_BACK_URL}/api/get-podium/${user.uid}`)
         .then(res => res.json())
         .then((data) => {
             setPodium(data)

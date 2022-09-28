@@ -41,7 +41,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
     const submitResult = () => {
         setSubmited(true)
         if(match.stage === "group"){
-            fetch('http://localhost:3001/api/group-match/', {
+            fetch(`${process.env.REACT_APP_BACK_URL}/api/group-match/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -66,7 +66,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
                 .catch(err => console.error(err))
         }
         if(match.stage === "round of 16"){
-            fetch('http://localhost:3001/api/round-16/', {
+            fetch(`${process.env.REACT_APP_BACK_URL}/api/round-16/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
             .catch(err => console.error(err))
         }
         if(match.stage === "quarterfinals"){
-            fetch('http://localhost:3001/api/set-quarterfinals/', {
+            fetch(`${process.env.REACT_APP_BACK_URL}/api/set-quarterfinals/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
             .catch(err => console.error(err))
         }
         if(match.stage === "semifinals"){
-            fetch('http://localhost:3001/api/set-semifinals/', {
+            fetch(`${process.env.REACT_APP_BACK_URL}/api/set-semifinals/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
             .catch(err => console.error(err))
         }
         if(match.stage === "third place"){
-            fetch('http://localhost:3001/api/set-thirdplace/', {
+            fetch(`${process.env.REACT_APP_BACK_URL}/api/set-thirdplace/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -158,7 +158,7 @@ function Match({ countries, match, getGroupPositions, round, user }) {
             .catch(err => console.error(err))
         }
         if(match.stage === "final"){
-            fetch('http://localhost:3001/api/set-final/', {
+            fetch(`${process.env.REACT_APP_BACK_URL}/api/set-final/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

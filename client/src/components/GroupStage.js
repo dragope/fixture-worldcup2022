@@ -17,7 +17,7 @@ function GroupStage() {
 
   const clearGroupStage = () => {
     console.log(load)
-    fetch(`/api/clear-group-stage/${user.uid}`, { method: "DELETE" })
+    fetch(`${process.env.REACT_APP_BACK_URL}/api/clear-group-stage/${user.uid}`, { method: "DELETE" })
       .then((res) => {if(res.status === 200){
         getMatchesPlayed()
         getFinalStages()

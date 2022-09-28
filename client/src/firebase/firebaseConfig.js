@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCU2Xy499WEu4MqJX-aJmh1zFcfRvpYCwc",
-  authDomain: "fixture-mundial-48fb2.firebaseapp.com",
-  projectId: "fixture-mundial-48fb2",
-  storageBucket: "fixture-mundial-48fb2.appspot.com",
-  messagingSenderId: "851032438343",
-  appId: "1:851032438343:web:9e4a89113a7f244e702362"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMIAN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 export const app = initializeApp(firebaseConfig);

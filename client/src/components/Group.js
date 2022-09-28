@@ -20,7 +20,7 @@ function Group({ group, countries, user }) {
   }, [positions])
 
   function getGroupPositions(){
-      fetch(`http://localhost:3001/api/get-group/${user.uid}`, {
+      fetch(`${process.env.REACT_APP_BACK_URL}/api/get-group/${user.uid}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -48,7 +48,7 @@ function Group({ group, countries, user }) {
 
   function getRound16(){
     positions[0] &&
-    fetch(`http://localhost:3001/api/set-round16/${user.uid}`, {
+    fetch(`${process.env.REACT_APP_BACK_URL}/api/set-round16/${user.uid}`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"

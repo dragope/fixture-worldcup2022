@@ -1,4 +1,4 @@
-const whitelist = ['http://localhost:3000']
+const whitelist = ['https://fixturewc2022.netlify.app']
 
 const corsOptions = {
     origin: function (origin, callback){
