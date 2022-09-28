@@ -2,10 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors')
 const bodyParser = require("body-parser")
+const path = require('path')
 
 
 //Initializations
 require('./database')
+require("dotenv").config();
 
 //Settings
 
@@ -17,6 +19,21 @@ app.use(bodyParser.json())
 
 //Routes
 app.use(require('./src/routes/routes'))
+
+app.get("/api/test", (req, res)=>{
+    res.send("Test")
+})
+
+app.get("*", (req, res)=>{
+    res.sendFile(
+        path.join(__dirname, "../client/build/index.html"),
+        function(err){
+            if(err){
+                res.status(500).send(err);
+            }
+        }
+    )
+})
 
 //Server is Listening
 app.set('port', process.env.port || 3001);

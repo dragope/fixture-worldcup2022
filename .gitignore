@@ -5,6 +5,8 @@ client/node_modules
 controllers/node_modules
 /.pnp
 .pnp.js
+controllers/.env
+client/.env
 
 # testing
 /coverage
