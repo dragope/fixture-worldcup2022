@@ -19,6 +19,7 @@ function FixtureContextProvider({ children }){
     const [ thirdPlace, setThirdPlace ] = useState([])
     const [ final, setFinal ] = useState([])
     const [ podium, setPodium ] = useState([])
+    const [ modalMessage, setModalMessage ] = useState(null)
 
     const getMatchesPlayed = () => {
         setLoadGroupStage(true)
@@ -122,7 +123,9 @@ function FixtureContextProvider({ children }){
             openModal,
             closeModal,
             openPodium,
-            closePodium
+            closePodium,
+            modalMessage, 
+            setModalMessage
         }}>
             {children}
         </FixtureContext.Provider>
