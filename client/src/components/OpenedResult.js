@@ -13,13 +13,24 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
                 <p><i>For example: if you think the match is going to end in the 90' 1 - 1 and the penalty shootout 4 -3, write 5 - 4 as the final result.</i></p></div>)
            openModal()
         } else {
-            if(goalsLocal >= 0 && goalsVisitor >= 0 ){
+            if(goalsLocal >= 0 && goalsVisitor >= 0 && Number.isInteger(Number(goalsLocal)) && Number.isInteger(Number(goalsVisitor))){
                 submitResult() 
             }else{
-                setModalMessage(<p>Results <b>cannot</b> contain any <i>negative</i> numbers or <i>non-integrer</i> numbers</p>)
+                setModalMessage(<p><b>Results con only contain positive integrer numbers</b>. They cannot not contain any <i>negative</i> numbers, <i>non-integrer</i> numbers, <i>letters</i> or any other special character.</p>)
                 openModal()
         }
         }
+    }
+
+    // .includes(/[^0-9.]/g)
+
+    function preventNonNumericalInput(e) {
+        e = e || window.event;
+        let charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+        let charStr = String.fromCharCode(charCode);
+
+        if (!charStr.match(/^[0-9]+$/))
+            e.preventDefault();
     }
 
   return (
@@ -27,6 +38,7 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
         <div className='group-stage-group-match-result-container'>
             <input 
                 type="number" 
+                onkeypress="preventNonNumericalInput(e)"
                 // placeholder={savedResult[0] ? savedResult[0].goalsLocal : 0}
                 // value={goalsLocal}
                 className='group-stage-group-match-result'
@@ -37,6 +49,7 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
         <div className='group-stage-group-match-result-container'>
             <input 
                 type="number" 
+                onkeypress="preventNonNumericalInput(e)"
                 // placeholder={savedResult[0] ? savedResult[0].goalsVisitor : 0}
                 // value={goalsVisitor}
                 className='group-stage-group-match-result'

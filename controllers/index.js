@@ -4,10 +4,9 @@ const cors = require('cors')
 const bodyParser = require("body-parser")
 const path = require('path')
 
-
 //Initializations
 require('./database')
-require("dotenv").config();
+require('dotenv').config();
 
 //Settings
 
