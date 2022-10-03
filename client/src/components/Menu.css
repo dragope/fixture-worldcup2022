@@ -21,11 +21,24 @@
 .menu-logo{
     width: 180px;
 }
-.menu-container > h1 {
-    color: white
+.logo-container{
+    width: 300px;
+    display: flex;
+    align-items: flex-start;
+}
+.title-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.menu-container> h1 {
+    color: white;
+    font-size: 50px;
+    align-items: center;
 }
 .menu-container-user{
-    color: white
+    color: white;
+    width: 300px;
 }
 .menu-container-user>  p {
     font-size: 15px;

@@ -16,7 +16,9 @@ function Menu() {
 
   return (
     <div className='menu-container'>
+        <div className='logo-container'>
         <img src={WorldCupLogo} className="menu-logo"/>
+        </div>
         <h1>Fixture</h1>
         <div className='menu-container-user'>
             <p><b>{user.email}</b></p>

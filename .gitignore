@@ -3,6 +3,7 @@
 # dependencies
 client/node_modules
 controllers/node_modules
+client/build
 /.pnp
 .pnp.js
 controllers/.env
@@ -12,7 +13,7 @@ client/.env
 /coverage
 
 # production
-/build
+/client/build
 
 # misc
 .DS_Store
