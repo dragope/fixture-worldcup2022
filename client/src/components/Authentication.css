@@ -1,11 +1,15 @@
 .authentication-container{
     width: 100vw;
     height: 100vh;
-    background-color: rgb(59, 28, 211);
+    background-color: #8A1538;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.authentication-logo{
+    height: 200px;
+    margin-bottom: 5%;
 }
 .authentication-form{
     width: 500px;
@@ -19,29 +23,49 @@
     background-color: white;
 }
 .authentication-form > input {
-    width: 350px;
-    height: 30px;
+    width: 400px;
+    height: 35px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    font-family: "Qatar2022";
+    font-size: 15px;
+    color: grey;
+    padding: 1.5%;
 }
 .authentication-form > label {
-    color: rgb(59, 28, 211);
+    color: #8A1538;
     font-weight: bold;
+    font-size: 20px;
     margin-bottom: -20px;
 }
-.authentication-state-button, .authentication-form>button {
+.authentication-form>button {
     width: 150px;
     height: 30px;
     margin-top: 1%;
+    font-family: "Qatar2022";
     border-radius: 5px;
-    font-weight: bold;
+    font-size: 15px;
     border: 1px solid white;
-    background-color: rgb(206, 126, 126);
+    background-color: #8A1538;
     color: white;
     cursor: pointer
 }
-.authentication-state-button:hover , .authentication-form>button:hover {
-    border: 1px solid rgb(206, 126, 126);
+.authentication-state-button{
+    border: none;
+    font-family: "Qatar2022";
+    color: white;
+    background-color: #8A1538;
+    font-size: 15px;
+    margin-top: 2%;
+    cursor: pointer;
+}
+.authentication-state-button:hover{
+    text-decoration: underline;
+}
+.authentication-form>button:hover {
+    border: 1px solid #8A1538;
     background-color: white;
-    color: rgb(206, 126, 126)
+    color: #8A1538;
 }
 .authentication-title{
     color: white;

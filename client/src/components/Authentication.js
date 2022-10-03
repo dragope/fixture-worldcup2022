@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Authentication.css'
 import { useAuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom'
+import WorldCupLogo from '../images/WorldCupLogo.svg'
 
 const Authentication = () => {
 
@@ -51,8 +52,9 @@ const Authentication = () => {
 
   return (
     <div className='authentication-container'>
-        
-        <h1 className='authentication-title'>{registered ? "Login" : "Sign Up"}</h1>
+        <img className="authentication-logo" src={WorldCupLogo} alt="World Cup Logo" />
+        <div className='authentication-form-container'>
+        <h1 className='authentication-title'>{registered ? "Fixture Login" : "Fixture Sign Up"}</h1>
         <form className='authentication-form' onSubmit={handleAuthentication}>
             <label htmlFor="email">Email</label>
             <input type="email" id="email" placeholder="you@domain.com" autoComplete='username'/>
@@ -61,7 +63,7 @@ const Authentication = () => {
             {!registered && 
             <>
                 <label htmlFor="password">Confirm Password</label>
-                <input type="password" id="confirmpassword" />
+                <input type="password" id="confirmpassword" placeholder='Confirm Password'/>
             </>}
             <button>{registered ? "Log In" : "Sign Up"}</button>
         </form>
@@ -69,6 +71,7 @@ const Authentication = () => {
         {error &&
             <p className='authentication-error'>{error}</p>
         }
+        </div>
     </div>
   )
 }
