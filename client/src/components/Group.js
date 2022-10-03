@@ -68,12 +68,12 @@ function Group({ group, countries, user }) {
   return (
     <div className='group-stage-group-container'>
       <div className="group-stage-group">
-        <h1 className='group-stage-group-name'>Group { group.group }</h1>
+        {/* <h1 className='group-stage-group-name'>Group { group.group }</h1> */}
         {
             group.matches.map( match => <Match key={match.matchid} id={match.matchid} match={match} countries={countries} getGroupPositions={()=> getGroupPositions()} user={user} /> )
         }
       </div>  
-        <GroupPositions key={"positions"+group.group} positions={positions}/>
+        <GroupPositions key={"positions"+group.group} group={group.group} positions={positions}/>
     </div>
   )
 }

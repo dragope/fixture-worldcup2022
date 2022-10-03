@@ -6,7 +6,7 @@ const path = require('path')
 
 //Initializations
 require('./database')
-require('dotenv').config();
+require('dotenv').config({path: path.resolve(__dirname, './.env')});
 
 //Settings
 

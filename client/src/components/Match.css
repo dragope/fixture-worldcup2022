@@ -3,33 +3,34 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid black;
     margin-top: 5px;
     width: 400px;
-    background-color: rgb(211, 211, 211);
-    padding: 2px;
+    background-color: #D9D9D9;
+    padding-top: 2px;
     border-radius: 5px;
+}
+.group-stage-group-match > p {
+    margin-top: 2px;
 }
 .group-stage-group-match-countries {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: white;
+    background-color: #F9F4F5;
     width: 100%;
     border-radius: 5px;
     padding: 3px;
 }
 .group-stage-group-match-team > p{
-    font-size: 12px;
+    font-size: 13px;
     width: 100%;
     text-align: center;
 }
 .group-stage-group-match-countries-flag {
-    height: 40px;
-    width: 40px;
-    border-radius: 40px;
-    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.149);
+    height: 42px;
+    width: 42px;
+    border-radius: 42px;
 }
 
 .group-stage-group-match-date {

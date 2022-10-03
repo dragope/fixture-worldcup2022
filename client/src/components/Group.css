@@ -1,8 +1,7 @@
 .group-stage-group-container {
     display: flex;
     flex-direction: row;
-    margin: 0.25%;
-    border: 1.5px solid black;
+    margin: 1%;
     background-color: white;
     padding: 1.5px;
     border-radius: 5px;

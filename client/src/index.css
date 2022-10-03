@@ -13,3 +13,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@font-face {
+  font-family: "Qatar2022";
+  src: local("Qatar2022"),
+    url("../src//fonts/Qatar2022Arabic-Bold.ttf") format("truetype");
+  font-weight: bold;
+}

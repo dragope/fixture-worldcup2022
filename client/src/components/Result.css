@@ -17,12 +17,15 @@
     font-weight: bold;
 }
 .group-stage-group-match-result-container > input {
+    font-family: "Qatar2022";
     font-weight: bold;
-    font-size: 17px;
-    text-align: center;
+    font-size: 20px;
+    line-height: 20px;
     color: rgb(107, 107, 107);
-    width: 20px;
-    height: 20px;
+    padding-top: 4px;
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
     border-bottom: 1.5px solid black;
     border-top: none;
     border-left: none;
@@ -30,15 +33,21 @@
     background-color: rgb(200, 200, 200);
 }
 #set{
-    color: red
+    color: #8A1538;
+    font-family: "Qatar2022";
+    cursor: pointer;
 }
 .group-stage-group-match-result-container > p {
     font-weight: bold;
+    font-family: "Qatar2022";
+    font-size: 22.5px;
 }
 .group-stage-group-match-results > button {
     font-weight: bold;
     font-size: 12px;
-    color:blue;
+    font-family: "Qatar2022";
+    color: blue;
+    cursor: pointer;
     border: none;
     background-color: transparent;
 }

@@ -39,8 +39,6 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
             <input 
                 type="number" 
                 onkeypress="preventNonNumericalInput(e)"
-                // placeholder={savedResult[0] ? savedResult[0].goalsLocal : 0}
-                // value={goalsLocal}
                 className='group-stage-group-match-result'
                 onChange={ e => setGoalsLocal(e.target.value) }
             />
@@ -50,8 +48,6 @@ function OpenedResult({ savedResult, goalsLocal, goalsVisitor, setGoalsLocal, se
             <input 
                 type="number" 
                 onkeypress="preventNonNumericalInput(e)"
-                // placeholder={savedResult[0] ? savedResult[0].goalsVisitor : 0}
-                // value={goalsVisitor}
                 className='group-stage-group-match-result'
                 onChange={ e => setGoalsVisitor(e.target.value) }
             />
