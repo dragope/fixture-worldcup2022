@@ -38,6 +38,7 @@ function AuthContextProvider({ children }){
             signup,
             login,
             user,
+            setUser,
             logout,
             load
         }}>

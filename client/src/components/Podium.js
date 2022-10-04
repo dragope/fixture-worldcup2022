@@ -13,6 +13,7 @@ function Podium() {
     <>
         {podium[2] &&
             <div className='podium-container'>
+                <h1>Podium</h1>
                 <div className='podium-container-champion'>
                     <div className='podium-container-team'>
                         <div className='podium-medal' id="champion">1</div>

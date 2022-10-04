@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import './Menu.css'
 import { useAuthContext } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import WorldCupLogo from '../images/WorldCupLogo.svg'
+import UserDefaultPic from '../images/user-default-pic.jpeg'
 
 function Menu() {
 
@@ -17,12 +18,15 @@ function Menu() {
   return (
     <div className='menu-container'>
         <div className='logo-container'>
-        <img src={WorldCupLogo} className="menu-logo"/>
+        <Link to='/'><img src={WorldCupLogo} className="menu-logo"/></Link>
         </div>
         <h1>Fixture</h1>
         <div className='menu-container-user'>
-            <p><b>{user.email}</b></p>
-            <button className='menu-container-logout-button' onClick={()=> handleSignOut()}>Sign Out</button>
+          <div className="menu-container-user-profile">
+          <p><Link to='/profile'><b className='menu-user'>Welcome, { user.displayName ? user.displayName : user.email }</b></Link></p>
+          </div>
+          <button className='menu-container-logout-button' onClick={()=> handleSignOut()}>Sign Out</button>
+          <Link to='/profile'><img className="menu-user-profile-pic" src={user.photoURL ? user.photoURL : UserDefaultPic} alt="User" /></Link>
         </div>
     </div>
   )

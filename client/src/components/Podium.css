@@ -1,9 +1,16 @@
 .podium-container{
+    background-color: white;
     width: 100vw;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-top: 1.5%;
+    padding-top: 1.5%
+    /* margin-top: 1.5%; */
+}
+.podium-container > h1 {
+    width: 100vw;
+    font-size: 40px;
+    color:#8A1538
 }
 .podium-container-champion{
     width: 100%;
@@ -16,7 +23,7 @@
 }
 .podium-container-team{
     padding: 20px;
-    color: white;
+    color: #8A1538;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -31,13 +38,13 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 1px solid grey;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 25px;
     font-weight: bold;
     margin-right: 10px;
+    color: white
 }
 #champion{
     background-color: rgb(179, 179, 41);

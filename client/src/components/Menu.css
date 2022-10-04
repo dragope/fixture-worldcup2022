@@ -1,6 +1,6 @@
 .menu-container{
     position: fixed;
-    margin-top: -100px;
+    top: 0;
     height: 100px;
     width: 100vw;
     background-color: #8A1538;
@@ -22,7 +22,7 @@
     width: 180px;
 }
 .logo-container{
-    width: 300px;
+    width: 350px;
     display: flex;
     align-items: flex-start;
 }
@@ -38,10 +38,15 @@
 }
 .menu-container-user{
     color: white;
-    width: 300px;
+    width: 350px;
 }
-.menu-container-user>  p {
-    font-size: 15px;
+.menu-user {
+    font-size: 15≥px;
+    text-decoration: none;
+    color: white;
+}
+.menu-user:hover{
+    color: #00cfb7
 }
 .menu-container-logout-button{
     font-family: "Qatar2022";
@@ -60,4 +65,21 @@
     border: 1px solid white;
     background-color: #8A1538;
     color: white
+}
+.menu-user-profile-pic{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    object-fit: cover;
+}
+.menu-user-profile-pic:hover {
+    transform: scale(1.15);
+    transition: 1s;
+}    
+.menu-container-user-profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
 }
