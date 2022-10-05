@@ -22,11 +22,9 @@ function Menu() {
         </div>
         <h1>Fixture</h1>
         <div className='menu-container-user'>
-          <div className="menu-container-user-profile">
-          <Link to='/profile'><p><b className='menu-user'>Welcome, { user.displayName ? user.displayName : user.email }</b></p></Link>
-          </div>
-          <button className='menu-container-logout-button' onClick={()=> handleSignOut()}>Sign Out</button>
-          <Link to='/profile'><img className="menu-user-profile-pic" src={user.photoURL ? user.photoURL : UserDefaultPic} alt="User" /></Link>
+            <Link to='/profile'><p><b className='menu-user'>Welcome, { user.displayName ? user.displayName : user.email }</b></p></Link>
+            <button className='menu-container-logout-button' onClick={()=> handleSignOut()}>Sign Out</button>
+            <Link to='/profile'><img className="menu-user-profile-pic" src={user.photoURL ? user.photoURL : UserDefaultPic} alt="User" /></Link>
         </div>
     </div>
   )
