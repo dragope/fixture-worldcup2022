@@ -11,6 +11,8 @@ function FinalStageContainer({ stage, countries }) {
 
   useEffect(()=>{}, [round16, quarterfinals, semifinals, thirdPlace, final])
 
+  console.log(quarterfinals)
+
   const clearStage = () => {
     if(stage.name === "Round of 16"){
       fetch(`${process.env.REACT_APP_BACK_URL}/api/clear-round16/${user.uid}`, { method: "DELETE" })

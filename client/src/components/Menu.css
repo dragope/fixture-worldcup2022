@@ -41,7 +41,7 @@
     width: 350px;
 }
 .menu-user {
-    font-size: 15≥px;
+    font-size: 15px;
     text-decoration: none;
     color: white;
 }
@@ -82,4 +82,7 @@
     align-items: center;
     justify-content: center;
     height: 100px;
+}
+.menu-container-user-profile > p {
+    text-decoration: none;
 }
