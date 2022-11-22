@@ -12,7 +12,7 @@
     padding-right: 5%
 }
 .menu-container-user{
-    width: 800px;
+    /* width: 800px; */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -24,7 +24,7 @@
     width: 180px;
 }
 .logo-container{
-    width: 350px;
+    width: 500px;
     display: flex;
     align-items: flex-start;
 }
@@ -84,8 +84,60 @@
     height: 100px;
     width: 800px;
     text-align: right;
-    /* background-color: aqua; */
 }
 .menu-container-user-profile > p {
     text-decoration: none;
+}
+@media (max-width: 950px) {
+    .menu-container {
+        position: fixed;
+        top: 0;
+        height: 70px;
+        width: 100vw;
+        background-color: #8A1538;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        padding-left: 5%;
+        padding-right: 5%
+    }
+    .logo-container{
+        width: 10vw;
+    }
+    .menu-container-user{
+        width: 10vw;
+        /* background-color: #00cfb7; */
+    }
+    .menu-logo {
+        width: 80px;
+    }
+    .menu-container>h1 {
+        color: white;
+        font-size: 20px;
+        align-items: center;
+        /* background-color: green; */
+    }
+    .menu-user{
+        visibility: hidden;
+    }
+    .menu-user-profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 30px;
+        object-fit: cover;
+        margin-left: 10px;
+    }
+    .menu-container-logout-button {
+        font-family: "Qatar2022";
+        width: 70px;
+        height: 25px;
+        border-radius: 4px;
+        font-weight: normal;
+        border: 1px solid transparent;
+        background-color: transparent;
+        font-size: 9px;
+        color: white;
+        cursor: pointer
+    }
 }

@@ -79,3 +79,16 @@
     color: white;
     font-weight: bold;
 }
+
+@media (max-width: 700px){
+    .authentication-logo {
+        width: 70vw;
+        margin-bottom: 5%;
+    }
+    .authentication-form{
+        width: 95vw;
+    }
+    .authentication-form>input{
+        width: 90vw;
+    }
+}

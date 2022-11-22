@@ -72,3 +72,53 @@
     font-size: 20px;
     color: #8A1538;
 }
+@media (max-width: 500px){
+    .user-profile-container {
+        margin-top: 80px;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .user-profile-section {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        /* justify-content: space-between; */
+        margin-bottom: 5%;
+    }
+    .user-profile-section>p {
+        color: #8A1538;
+        font-size: 15px;
+        margin-bottom: 0.5%;
+        margin-top: 1.5%;
+        width: 135px;
+        text-align: center;
+    }
+    .input-userporfile > p {
+        margin-top: 5%;
+    }
+    .user-profile-update-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 85vw;
+        padding: 1%;
+        margin-top: 5%;
+    }
+    .user-profile-section>button {
+        width: 130px;
+        height: 30px;
+        font-family: "Qatar2022";
+        border-radius: 5px;
+        font-size: 12px;
+        border: 1px solid white;
+        background-color: #8A1538;
+        color: white;
+        cursor: pointer;
+        margin-top: 2.5%;
+    }
+}
